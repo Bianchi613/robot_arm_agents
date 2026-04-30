@@ -106,6 +106,19 @@ Movimento normal:
 python app/main.py "mover A2 A4"
 ```
 
+Tambem pode informar a peca esperada:
+
+```bash
+python app/main.py "mover peao A2 A4"
+python app/main.py "mover cavalo B1 C3"
+```
+
+Se a peca informada nao bater com a casa de origem, o `ChessGame` rejeita antes do braco se mexer:
+
+```bash
+python app/main.py "mover cavalo A2 A4"
+```
+
 Esperado:
 
 ```txt

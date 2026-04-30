@@ -33,7 +33,9 @@ SupervisorAgent recebe feedback
 `ChessGame`
 
 - recebe comandos como `mover A2 A4`
+- aceita peca opcional, como `mover peao A2 A4`
 - valida regras de xadrez com `python-chess`
+- confere se a peca declarada bate com a casa de origem
 - sabe de quem e a vez
 - detecta lance ilegal
 - detecta movimento normal

@@ -7,7 +7,7 @@ class ChessGame:
 
     def validate_command(self, command: str) -> dict:
         try:
-            origin, destination = self._parse_command(command)
+            origin, destination, expected_piece_type = self._parse_command(command)
         except ValueError as error:
             return {
                 "status": "rejected",
@@ -22,6 +22,16 @@ class ChessGame:
             }
 
         moving_piece = self.board.piece_at(chess.parse_square(origin.lower()))
+        actual_piece_type = self._piece_type(moving_piece)
+        if expected_piece_type and expected_piece_type != actual_piece_type:
+            return {
+                "status": "rejected",
+                "message": (
+                    f"Peca declarada nao confere: voce informou {expected_piece_type}, "
+                    f"mas em {origin} existe {self._piece_label(moving_piece)}."
+                ),
+            }
+
         captured_piece = self.board.piece_at(chess.parse_square(destination.lower()))
         is_capture = self.board.is_capture(move)
         self.board.push(move)
@@ -76,18 +86,44 @@ class ChessGame:
         }
         return names[piece.piece_type]
 
-    def _parse_command(self, command: str) -> tuple[str, str]:
+    def _parse_command(self, command: str) -> tuple[str, str, str | None]:
         parts = command.strip().upper().split()
         if len(parts) == 2:
             origin, destination = parts
+            expected_piece_type = None
         elif len(parts) == 3 and parts[0] == "MOVER":
             origin, destination = parts[1], parts[2]
+            expected_piece_type = None
+        elif len(parts) == 4 and parts[0] == "MOVER":
+            expected_piece_type = self._normalize_piece_name(parts[1])
+            origin, destination = parts[2], parts[3]
         else:
-            raise ValueError("Use o formato: mover A2 A4")
+            raise ValueError("Use o formato: mover A2 A4 ou mover peao A2 A4")
 
         self._validate_square(origin)
         self._validate_square(destination)
-        return origin, destination
+        return origin, destination, expected_piece_type
+
+    def _normalize_piece_name(self, piece_name: str) -> str:
+        names = {
+            "PEAO": "pawn",
+            "PEÃO": "pawn",
+            "PAWN": "pawn",
+            "CAVALO": "knight",
+            "KNIGHT": "knight",
+            "BISPO": "bishop",
+            "BISHOP": "bishop",
+            "TORRE": "rook",
+            "ROOK": "rook",
+            "RAINHA": "queen",
+            "DAMA": "queen",
+            "QUEEN": "queen",
+            "REI": "king",
+            "KING": "king",
+        }
+        if piece_name not in names:
+            raise ValueError(f"Tipo de peca desconhecido: {piece_name}")
+        return names[piece_name]
 
     def _validate_square(self, square: str) -> None:
         if len(square) != 2:
