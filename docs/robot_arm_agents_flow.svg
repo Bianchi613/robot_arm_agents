@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="780" viewBox="0 0 1400 780">
+  <defs>
+    <style>
+      .title { font: 700 46px Arial, sans-serif; fill: #081b33; }
+      .subtitle { font: 20px Arial, sans-serif; fill: #18385c; }
+      .card-title { font: 700 18px Arial, sans-serif; fill: #081b33; }
+      .text { font: 15px Arial, sans-serif; fill: #111827; }
+      .small { font: 13px Arial, sans-serif; fill: #26364d; }
+      .mono { font: 700 14px Consolas, monospace; fill: #0c2b6f; }
+      .badge { font: 700 16px Arial, sans-serif; fill: #ffffff; }
+      .arrow { stroke: #0d4f9c; stroke-width: 4; fill: none; marker-end: url(#arrowhead); }
+      .dash { stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 7 7; fill: none; marker-end: url(#arrowhead-orange); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#0d4f9c"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="780" fill="#fbfdff"/>
+
+  <text x="700" y="58" text-anchor="middle" class="title">Robot Arm Agents</text>
+  <text x="700" y="92" text-anchor="middle" class="subtitle">Simulador de um braco robotico para jogar xadrez com regras antes da camada fisica</text>
+
+  <!-- Cards -->
+  <g transform="translate(35,130)">
+    <rect width="180" height="205" rx="10" fill="#f7fbff" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="42" cy="32" r="14" fill="#1d4ed8"/><text x="42" y="38" text-anchor="middle" class="badge">1</text>
+    <text x="70" y="38" class="card-title" fill="#1d4ed8">Usuario</text>
+    <text x="90" y="94" text-anchor="middle" font-size="48" fill="#2563eb">●</text>
+    <text x="90" y="128" text-anchor="middle" font-size="46" fill="#2563eb">♙</text>
+    <rect x="25" y="148" width="130" height="48" rx="7" fill="#ffffff" stroke="#2563eb" stroke-dasharray="5 4"/>
+    <text x="90" y="178" text-anchor="middle" class="mono">mover A2 A4</text>
+  </g>
+
+  <g transform="translate(255,130)">
+    <rect width="180" height="205" rx="10" fill="#f7fff8" stroke="#16a34a" stroke-width="2"/>
+    <circle cx="42" cy="32" r="14" fill="#16a34a"/><text x="42" y="38" text-anchor="middle" class="badge">2</text>
+    <text x="70" y="38" class="card-title">ChessGame</text>
+    <text x="90" y="100" text-anchor="middle" font-size="54" fill="#16a34a">♞</text>
+    <text x="90" y="128" text-anchor="middle" class="text">Valida o lance</text>
+    <text x="90" y="150" text-anchor="middle" class="text">com python-chess</text>
+    <line x1="42" y1="166" x2="138" y2="166" stroke="#16a34a"/>
+    <text x="90" y="192" text-anchor="middle" class="small">Lance legal?</text>
+  </g>
+
+  <g transform="translate(475,130)">
+    <rect width="190" height="165" rx="10" fill="#fffaf0" stroke="#f59e0b" stroke-width="2"/>
+    <circle cx="42" cy="32" r="14" fill="#f59e0b"/><text x="42" y="38" text-anchor="middle" class="badge">3</text>
+    <text x="70" y="38" class="card-title">SupervisorAgent</text>
+    <text x="95" y="100" text-anchor="middle" font-size="52" fill="#f59e0b">⌬</text>
+    <text x="95" y="136" text-anchor="middle" class="text">Orquestra a execucao</text>
+  </g>
+
+  <g transform="translate(705,130)">
+    <rect width="205" height="390" rx="10" fill="#fbf9ff" stroke="#7c3aed" stroke-width="2"/>
+    <circle cx="42" cy="32" r="14" fill="#7c3aed"/><text x="42" y="38" text-anchor="middle" class="badge">4</text>
+    <text x="70" y="38" class="card-title" fill="#4c1d95">MotionCoordinator</text>
+    <text x="102" y="105" text-anchor="middle" font-size="46" fill="#7c3aed">▣</text>
+    <text x="102" y="132" text-anchor="middle" class="text">Converte o lance em</text>
+    <text x="102" y="154" text-anchor="middle" class="text">plano fisico por etapas</text>
+    <g class="mono" text-anchor="middle">
+      <rect x="25" y="174" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="188">go_home</text>
+      <rect x="25" y="202" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="216">source_above</text>
+      <rect x="25" y="230" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="244">open_gripper</text>
+      <rect x="25" y="258" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="272">source_pick</text>
+      <rect x="25" y="286" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="300">close_gripper</text>
+      <rect x="25" y="314" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="328">lift_piece</text>
+      <rect x="25" y="342" width="155" height="18" rx="3" fill="#ffffff" stroke="#c4b5fd"/>
+      <text x="102" y="356">destination_drop</text>
+    </g>
+  </g>
+
+  <g transform="translate(950,130)">
+    <rect width="210" height="380" rx="10" fill="#f7fbff" stroke="#0ea5e9" stroke-width="2"/>
+    <circle cx="42" cy="32" r="14" fill="#0284c7"/><text x="42" y="38" text-anchor="middle" class="badge">5</text>
+    <text x="75" y="38" class="card-title" fill="#0369a1">Robot</text>
+    <text x="105" y="105" text-anchor="middle" font-size="55" fill="#0284c7">⚙</text>
+    <text x="105" y="138" text-anchor="middle" class="text">Executa no tabuleiro</text>
+    <text x="105" y="160" text-anchor="middle" class="text">fisico simulado</text>
+    <rect x="50" y="185" width="110" height="110" fill="#ffffff" stroke="#94a3b8"/>
+    <g stroke="#cbd5e1">
+      <path d="M50 198H160M50 212H160M50 226H160M50 240H160M50 254H160M50 268H160M50 282H160"/>
+      <path d="M64 185V295M78 185V295M92 185V295M106 185V295M120 185V295M134 185V295M148 185V295"/>
+    </g>
+    <text x="64" y="285" text-anchor="middle" font-size="17">♙</text>
+    <text x="120" y="235" text-anchor="middle" font-size="17">♙</text>
+    <text x="120" y="200" text-anchor="middle" font-size="17">♚</text>
+    <text x="105" y="328" text-anchor="middle" class="text">Casas A1 ate H8</text>
+  </g>
+
+  <g transform="translate(1200,130)">
+    <rect width="170" height="205" rx="10" fill="#f7ffff" stroke="#0891b2" stroke-width="2"/>
+    <circle cx="42" cy="32" r="14" fill="#0891b2"/><text x="42" y="38" text-anchor="middle" class="badge">6</text>
+    <text x="70" y="38" class="card-title" fill="#0e7490">Resultado</text>
+    <text x="85" y="108" text-anchor="middle" font-size="54" fill="#0891b2">☑</text>
+    <text x="85" y="145" text-anchor="middle" class="text">Status + estado</text>
+    <text x="85" y="167" text-anchor="middle" class="text">antes/depois</text>
+  </g>
+
+  <!-- Flow arrows -->
+  <path class="arrow" d="M215 232H250"/>
+  <path class="arrow" d="M435 232H470"/>
+  <path class="arrow" d="M665 232H700"/>
+  <path class="arrow" d="M910 232H945"/>
+  <path class="arrow" d="M1160 232H1195"/>
+
+  <!-- Invalid branch -->
+  <path d="M345 335V465" stroke="#dc2626" stroke-width="3" fill="none" marker-end="url(#arrowhead-red)"/>
+  <defs>
+    <marker id="arrowhead-red" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <text x="285" y="410" class="text" fill="#dc2626">Lance ilegal</text>
+  <rect x="240" y="480" width="185" height="70" rx="9" fill="#fff7f7" stroke="#dc2626"/>
+  <text x="332" y="516" text-anchor="middle" class="card-title" fill="#991b1b">Rejeita antes</text>
+  <text x="332" y="538" text-anchor="middle" class="text" fill="#991b1b">do braco se mover</text>
+
+  <!-- LLM optional -->
+  <path class="dash" d="M570 295V535"/>
+  <rect x="465" y="535" width="260" height="90" rx="9" fill="#fffaf0" stroke="#f59e0b" stroke-dasharray="7 7"/>
+  <text x="595" y="565" text-anchor="middle" class="card-title" fill="#c2410c">LLM opcional</text>
+  <text x="595" y="588" text-anchor="middle" class="text">Ollama + qwen2.5-coder:7b</text>
+  <text x="595" y="612" text-anchor="middle" class="small">Preparado para comandos futuros</text>
+
+  <!-- Capture and board notes -->
+  <rect x="930" y="540" width="205" height="80" rx="9" fill="#fff7ed" stroke="#fb923c"/>
+  <text x="1032" y="572" text-anchor="middle" class="card-title" fill="#c2410c">Captura</text>
+  <text x="1032" y="598" text-anchor="middle" class="text">Peca capturada -></text>
+  <text x="1032" y="620" text-anchor="middle" class="mono" fill="#c2410c">CAPTURE_ZONE</text>
+
+  <rect x="1160" y="540" width="210" height="80" rx="9" fill="#f8fbff" stroke="#60a5fa"/>
+  <text x="1265" y="572" text-anchor="middle" class="card-title" fill="#1d4ed8">Tabuleiro fisico</text>
+  <text x="1265" y="600" text-anchor="middle" class="text">Casas A1 ate H8</text>
+
+  <!-- Bottom status -->
+  <rect x="35" y="650" width="760" height="95" rx="10" fill="#ffffff" stroke="#b6c3d1"/>
+  <text x="60" y="685" class="card-title" fill="#0f2a56">O que ja funciona</text>
+  <text x="100" y="720" text-anchor="middle" class="text">Validacao</text>
+  <text x="245" y="720" text-anchor="middle" class="text">Bloqueio ilegal</text>
+  <text x="390" y="720" text-anchor="middle" class="text">Movimento</text>
+  <text x="535" y="720" text-anchor="middle" class="text">Captura</text>
+  <text x="680" y="720" text-anchor="middle" class="text">Feedback</text>
+  <text x="100" y="695" text-anchor="middle" font-size="30" fill="#16a34a">✓</text>
+  <text x="245" y="695" text-anchor="middle" font-size="30" fill="#dc2626">✕</text>
+  <text x="390" y="695" text-anchor="middle" font-size="30" fill="#2563eb">↔</text>
+  <text x="535" y="695" text-anchor="middle" font-size="30" fill="#7c3aed">♟</text>
+  <text x="680" y="695" text-anchor="middle" font-size="30" fill="#0891b2">☑</text>
+
+  <rect x="835" y="650" width="535" height="95" rx="10" fill="#ffffff" stroke="#b6c3d1"/>
+  <text x="865" y="685" class="card-title" fill="#0f2a56">Exemplo de saida</text>
+  <rect x="955" y="675" width="380" height="52" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="975" y="697" class="small" font-family="Consolas, monospace">Status: ok</text>
+  <text x="975" y="718" class="small" font-family="Consolas, monospace">depois: {'A2': None, 'A4': 'white_piece'}</text>
+</svg>

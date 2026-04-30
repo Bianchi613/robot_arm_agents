@@ -1,5 +1,7 @@
 # Arquitetura
 
+![Robot Arm Agents flow](docs/robot_arm_agents_flow.svg)
+
 ## Visao Geral
 
 O projeto separa regras de xadrez, planejamento da missao fisica e execucao do robo.

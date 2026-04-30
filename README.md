@@ -2,6 +2,8 @@
 
 Simulador de um braco robotico para jogar xadrez, com uma camada de regras antes da camada fisica.
 
+![Robot Arm Agents flow](docs/robot_arm_agents_flow.svg)
+
 O fluxo atual e:
 
 ```txt
