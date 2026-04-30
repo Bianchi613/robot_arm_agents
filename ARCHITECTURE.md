@@ -94,6 +94,8 @@ Fluxo:
    origem = A2
    destino = A4
    tipo = normal
+   peca = white_pawn
+   cor = white
 4. SupervisorAgent recebe a intencao
 5. JointAgents sugerem movimentos
 6. MotionCoordinator monta o plano

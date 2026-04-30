@@ -106,6 +106,21 @@ Movimento normal:
 python app/main.py "mover A2 A4"
 ```
 
+Esperado:
+
+```txt
+Status: ok
+Xadrez:
+  tipo: normal
+  peca: white_pawn
+  cor: white
+  origem: A2
+  destino: A4
+peca_movida: True
+antes: {'A2': 'white_pawn', 'A4': None}
+depois: {'A2': None, 'A4': 'white_pawn'}
+```
+
 Tambem pode informar a peca esperada:
 
 ```bash
@@ -122,10 +137,8 @@ python app/main.py "mover cavalo A2 A4"
 Esperado:
 
 ```txt
-Status: ok
-peca_movida: True
-antes: {'A2': 'white_pawn', 'A4': None}
-depois: {'A2': None, 'A4': 'white_pawn'}
+Status: rejected
+Mensagem: Peca declarada nao confere: voce informou knight, mas em A2 existe white_pawn.
 ```
 
 Lance ilegal:
