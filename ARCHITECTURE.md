@@ -177,9 +177,9 @@ go_home
 Feedback esperado:
 
 ```txt
-antes: {'E4': 'white_piece', 'D5': 'black_piece'}
-depois: {'E4': None, 'D5': 'white_piece'}
-capturadas: ['black_piece']
+antes: {'E4': 'white_pawn', 'D5': 'black_pawn'}
+depois: {'E4': None, 'D5': 'white_pawn'}
+capturadas: ['black_pawn']
 ```
 
 ## Mapa Fisico

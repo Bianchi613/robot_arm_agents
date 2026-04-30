@@ -111,8 +111,8 @@ Esperado:
 ```txt
 Status: ok
 peca_movida: True
-antes: {'A2': 'white_piece', 'A4': None}
-depois: {'A2': None, 'A4': 'white_piece'}
+antes: {'A2': 'white_pawn', 'A4': None}
+depois: {'A2': None, 'A4': 'white_pawn'}
 ```
 
 Lance ilegal:
@@ -143,9 +143,9 @@ mover E4 D5
 Resultado esperado da captura:
 
 ```txt
-antes: {'E4': 'white_piece', 'D5': 'black_piece'}
-depois: {'E4': None, 'D5': 'white_piece'}
-capturadas: ['black_piece']
+antes: {'E4': 'white_pawn', 'D5': 'black_pawn'}
+depois: {'E4': None, 'D5': 'white_pawn'}
+capturadas: ['black_pawn']
 ```
 
 Observacao: executar `python app/main.py "..."` sempre cria uma partida nova. Para testar sequencias completas, use o mesmo `ChessGame` e o mesmo `SupervisorAgent` no mesmo processo.

@@ -21,31 +21,60 @@ class ChessGame:
                 "message": f"Lance invalido no xadrez: {origin} -> {destination}",
             }
 
+        moving_piece = self.board.piece_at(chess.parse_square(origin.lower()))
+        captured_piece = self.board.piece_at(chess.parse_square(destination.lower()))
         is_capture = self.board.is_capture(move)
         self.board.push(move)
-        if is_capture:
-            return {
-                "status": "ok",
-                "message": "Captura validada pelo ChessGame.",
-                "origin": origin,
-                "destination": destination,
-                "move_type": "capture",
-                "captured_square": destination,
-                "turn": "white" if self.board.turn == chess.WHITE else "black",
-                "check": self.board.is_check(),
-                "checkmate": self.board.is_checkmate(),
-            }
-
-        return {
+        result = {
             "status": "ok",
-            "message": "Lance normal validado pelo ChessGame.",
             "origin": origin,
             "destination": destination,
-            "move_type": "normal",
+            "move_type": "capture" if is_capture else "normal",
+            "piece_color": self._piece_color(moving_piece),
+            "piece_type": self._piece_type(moving_piece),
+            "piece": self._piece_label(moving_piece),
             "turn": "white" if self.board.turn == chess.WHITE else "black",
             "check": self.board.is_check(),
             "checkmate": self.board.is_checkmate(),
         }
+
+        if is_capture:
+            result.update(
+                {
+                    "message": "Captura validada pelo ChessGame.",
+                    "captured_square": destination,
+                    "captured_piece_color": self._piece_color(captured_piece),
+                    "captured_piece_type": self._piece_type(captured_piece),
+                    "captured_piece": self._piece_label(captured_piece),
+                }
+            )
+            return result
+
+        result["message"] = "Lance normal validado pelo ChessGame."
+        return result
+
+    def _piece_label(self, piece: chess.Piece | None) -> str | None:
+        if piece is None:
+            return None
+        return f"{self._piece_color(piece)}_{self._piece_type(piece)}"
+
+    def _piece_color(self, piece: chess.Piece | None) -> str | None:
+        if piece is None:
+            return None
+        return "white" if piece.color == chess.WHITE else "black"
+
+    def _piece_type(self, piece: chess.Piece | None) -> str | None:
+        if piece is None:
+            return None
+        names = {
+            chess.PAWN: "pawn",
+            chess.KNIGHT: "knight",
+            chess.BISHOP: "bishop",
+            chess.ROOK: "rook",
+            chess.QUEEN: "queen",
+            chess.KING: "king",
+        }
+        return names[piece.piece_type]
 
     def _parse_command(self, command: str) -> tuple[str, str]:
         parts = command.strip().upper().split()

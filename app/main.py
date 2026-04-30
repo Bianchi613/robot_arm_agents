@@ -35,6 +35,10 @@ def main() -> None:
             "destination": chess_result["destination"],
             "move_type": chess_result["move_type"],
             "captured_square": chess_result.get("captured_square"),
+            "piece": chess_result.get("piece"),
+            "piece_color": chess_result.get("piece_color"),
+            "piece_type": chess_result.get("piece_type"),
+            "captured_piece": chess_result.get("captured_piece"),
         }
     )
     result["chess"] = chess_result
@@ -51,8 +55,12 @@ def _print_result(command: str, result: dict) -> None:
         print(f"  status: {chess_result.get('status')}")
         if chess_result.get("origin"):
             print(f"  tipo: {chess_result.get('move_type')}")
+            print(f"  peca: {chess_result.get('piece')}")
+            print(f"  cor: {chess_result.get('piece_color')}")
             print(f"  origem: {chess_result.get('origin')}")
             print(f"  destino: {chess_result.get('destination')}")
+            if chess_result.get("captured_piece"):
+                print(f"  peca_capturada: {chess_result.get('captured_piece')}")
             print(f"  xeque: {chess_result.get('check')}")
             print(f"  xeque_mate: {chess_result.get('checkmate')}")
     print("Plano:")

@@ -22,11 +22,21 @@ class MockRobot:
             for column in "ABCDEFGH"
             for row in range(1, 9)
         }
+        back_rank = {
+            "A": "rook",
+            "B": "knight",
+            "C": "bishop",
+            "D": "queen",
+            "E": "king",
+            "F": "bishop",
+            "G": "knight",
+            "H": "rook",
+        }
         for column in "ABCDEFGH":
-            board[f"{column}1"] = "white_piece"
-            board[f"{column}2"] = "white_piece"
-            board[f"{column}7"] = "black_piece"
-            board[f"{column}8"] = "black_piece"
+            board[f"{column}1"] = f"white_{back_rank[column]}"
+            board[f"{column}2"] = "white_pawn"
+            board[f"{column}7"] = "black_pawn"
+            board[f"{column}8"] = f"black_{back_rank[column]}"
         return board
 
     def get_state(self) -> dict:
