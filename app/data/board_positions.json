@@ -1,0 +1,1296 @@
+{
+  "HOME": {
+    "base": 90,
+    "shoulder": 90,
+    "elbow": 90,
+    "wrist": 90
+  },
+  "CAPTURE_ZONE": {
+    "base": 170,
+    "shoulder": 100,
+    "elbow": 80,
+    "wrist": 90
+  },
+  "squares": {
+    "A1": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "A2": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "A3": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "A4": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "A5": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "A6": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "A7": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "A8": {
+      "ABOVE": {
+        "base": 25,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 25,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 25,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "B1": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "B2": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "B3": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "B4": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "B5": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "B6": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "B7": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "B8": {
+      "ABOVE": {
+        "base": 44,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 44,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 44,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "C1": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "C2": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "C3": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "C4": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "C5": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "C6": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "C7": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "C8": {
+      "ABOVE": {
+        "base": 62,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 62,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 62,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "D1": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "D2": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "D3": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "D4": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "D5": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "D6": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "D7": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "D8": {
+      "ABOVE": {
+        "base": 81,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 81,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 81,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "E1": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "E2": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "E3": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "E4": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "E5": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "E6": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "E7": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "E8": {
+      "ABOVE": {
+        "base": 99,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 99,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 99,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "F1": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "F2": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "F3": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "F4": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "F5": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "F6": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "F7": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "F8": {
+      "ABOVE": {
+        "base": 118,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 118,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 118,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "G1": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "G2": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "G3": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "G4": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "G5": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "G6": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "G7": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "G8": {
+      "ABOVE": {
+        "base": 136,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 136,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 136,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    },
+    "H1": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 116,
+        "elbow": 78,
+        "wrist": 84
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 127,
+        "elbow": 72,
+        "wrist": 81
+      }
+    },
+    "H2": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 112,
+        "elbow": 82,
+        "wrist": 86
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 123,
+        "elbow": 76,
+        "wrist": 83
+      }
+    },
+    "H3": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 109,
+        "elbow": 86,
+        "wrist": 88
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 120,
+        "elbow": 80,
+        "wrist": 85
+      }
+    },
+    "H4": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 105,
+        "elbow": 90,
+        "wrist": 90
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 116,
+        "elbow": 84,
+        "wrist": 87
+      }
+    },
+    "H5": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 102,
+        "elbow": 94,
+        "wrist": 92
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 113,
+        "elbow": 88,
+        "wrist": 89
+      }
+    },
+    "H6": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 98,
+        "elbow": 98,
+        "wrist": 94
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 109,
+        "elbow": 92,
+        "wrist": 91
+      }
+    },
+    "H7": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 95,
+        "elbow": 102,
+        "wrist": 96
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 106,
+        "elbow": 96,
+        "wrist": 93
+      }
+    },
+    "H8": {
+      "ABOVE": {
+        "base": 155,
+        "shoulder": 91,
+        "elbow": 106,
+        "wrist": 98
+      },
+      "PICK": {
+        "base": 155,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      },
+      "DROP": {
+        "base": 155,
+        "shoulder": 102,
+        "elbow": 100,
+        "wrist": 95
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "llm": {
+    "provider": "ollama",
+    "model": "qwen2.5-coder:7b",
+    "base_url": "http://localhost:11434",
+    "enabled": true,
+    "fallback_to_rule_parser": true
+  },
+  "SupervisorAgent": {
+    "role": "Gerente da missao",
+    "responsibilities": [
+      "Receber a ordem do usuario",
+      "Interpretar comandos simples",
+      "Ler o estado atual do robo",
+      "Criar intencao de movimento",
+      "Solicitar propostas dos agentes de articulacao",
+      "Validar o plano final",
+      "Enviar o plano ao robo",
+      "Receber feedback"
+    ],
+    "can_do": [
+      "Aceitar ou recusar plano por seguranca",
+      "Enviar comandos para MockRobot ou ArduinoRobot"
+    ],
+    "cannot_do": [
+      "Mover servos diretamente",
+      "Ignorar limites das articulacoes"
+    ]
+  },
+  "BaseJointAgent": {
+    "role": "Agente da base",
+    "limits": {
+      "min_angle": 0,
+      "max_angle": 180
+    },
+    "responsibilities": [
+      "Cuidar da rotacao horizontal",
+      "Sugerir angulo da base",
+      "Verificar limite da base",
+      "Avisar se a base nao pode fazer o movimento"
+    ]
+  },
+  "ShoulderJointAgent": {
+    "role": "Agente do ombro",
+    "limits": {
+      "min_angle": 20,
+      "max_angle": 160
+    },
+    "responsibilities": [
+      "Cuidar da subida e descida principal",
+      "Sugerir angulo do ombro",
+      "Evitar descer demais",
+      "Verificar limite do ombro"
+    ]
+  },
+  "ElbowJointAgent": {
+    "role": "Agente do cotovelo",
+    "limits": {
+      "min_angle": 15,
+      "max_angle": 165
+    },
+    "responsibilities": [
+      "Cuidar do alcance do braco",
+      "Sugerir extensao ou recolhimento",
+      "Verificar limite do cotovelo",
+      "Evitar extensao perigosa"
+    ]
+  },
+  "WristJointAgent": {
+    "role": "Agente do punho",
+    "limits": {
+      "min_angle": 0,
+      "max_angle": 180
+    },
+    "responsibilities": [
+      "Cuidar da inclinacao da garra",
+      "Manter a garra alinhada",
+      "Compensar ombro e cotovelo",
+      "Verificar limite do punho"
+    ]
+  },
+  "GripperAgent": {
+    "role": "Agente da garra",
+    "limits": {
+      "open_angle": 80,
+      "closed_angle": 25
+    },
+    "responsibilities": [
+      "Abrir garra",
+      "Fechar garra",
+      "Segurar peca",
+      "Soltar peca",
+      "Evitar esmagar peca"
+    ]
+  },
+  "MotionCoordinator": {
+    "role": "Coordenador tecnico do movimento",
+    "responsibilities": [
+      "Receber propostas dos JointAgents",
+      "Juntar as propostas",
+      "Detectar conflitos",
+      "Corrigir conflitos simples",
+      "Sincronizar velocidades",
+      "Gerar plano completo",
+      "Devolver plano ao SupervisorAgent"
+    ]
+  }
+}

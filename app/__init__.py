@@ -1,0 +1,1 @@
+"""Robot arm agents application."""
