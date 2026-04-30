@@ -43,7 +43,7 @@ class MotionCoordinatorAgent:
         if coordinator_review and coordinator_review.get("approved") is False:
             return {
                 "status": "blocked",
-                "message": coordinator_review.get("reason", "MotionCoordinatorAgent rejeitou o plano."),
+                "message": coordinator_review.get("reason", "MotionCoordinatorAgent rejected the plan."),
                 "origin": origin,
                 "destination": destination,
                 "move_type": intention.get("move_type", "normal"),
@@ -54,14 +54,14 @@ class MotionCoordinatorAgent:
 
         return {
             "status": "ready",
-            "message": "Plano coordenado com sucesso.",
+            "message": "Plan coordinated successfully.",
             "origin": origin,
             "destination": destination,
             "move_type": intention.get("move_type", "normal"),
             "joint_proposals": proposals,
             "coordinator_agent": coordinator_review or {
                 "approved": True,
-                "reason": "Coordenacao deterministica usada como fallback.",
+                "reason": "Deterministic coordination used as fallback.",
                 "risk": "low",
                 "llm_used": False,
             },
@@ -79,7 +79,7 @@ class MotionCoordinatorAgent:
                 return None
             return {
                 "approved": False,
-                "reason": "Qwen/Ollama nao esta disponivel para o MotionCoordinatorAgent.",
+                "reason": "Qwen/Ollama is unavailable for MotionCoordinatorAgent.",
                 "risk": "high",
                 "llm_used": False,
             }
@@ -94,7 +94,7 @@ class MotionCoordinatorAgent:
                 return None
             return {
                 "approved": False,
-                "reason": "Qwen/Ollama nao respondeu ao MotionCoordinatorAgent.",
+                "reason": "Qwen/Ollama did not answer MotionCoordinatorAgent.",
                 "risk": "high",
                 "llm_used": False,
             }
@@ -145,16 +145,16 @@ class MotionCoordinatorAgent:
         destination = intention["destination"]
         if origin not in squares:
             return (
-                f"Posicao de origem sem calibracao: {origin}. "
-                "Adicione essa casa em app/data/board_positions.json."
+                f"Origin position has no calibration: {origin}. "
+                "Add this square to app/data/board_positions.json."
             )
         if destination not in squares:
             return (
-                f"Posicao de destino sem calibracao: {destination}. "
-                "Adicione essa casa em app/data/board_positions.json."
+                f"Destination position has no calibration: {destination}. "
+                "Add this square to app/data/board_positions.json."
             )
         if intention.get("move_type") == "capture" and "CAPTURE_ZONE" not in self.board_positions:
-            return "CAPTURE_ZONE sem calibracao em app/data/board_positions.json."
+            return "CAPTURE_ZONE has no calibration in app/data/board_positions.json."
         return None
 
     def _go_home_step(self) -> dict:
@@ -210,7 +210,7 @@ class MotionCoordinatorAgent:
         if shoulder is not None and elbow is not None:
             if shoulder < 45 and elbow > 135:
                 conflicts.append(
-                    "Movimento bloqueado: ombro muito baixo com cotovelo muito esticado."
+                    "Movement blocked: shoulder too low with elbow too extended."
                 )
 
         return conflicts

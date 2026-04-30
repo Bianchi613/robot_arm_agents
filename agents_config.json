@@ -8,102 +8,102 @@
     "fallback_to_rule_parser": false
   },
   "SupervisorAgent": {
-    "role": "Gerente da missao",
+    "role": "Mission manager",
     "responsibilities": [
-      "Receber a ordem do usuario",
-      "Interpretar comandos simples",
-      "Ler o estado atual do robo",
-      "Criar intencao de movimento",
-      "Solicitar propostas dos agentes de articulacao",
-      "Validar o plano final",
-      "Enviar o plano ao robo",
-      "Receber feedback"
+      "Receive the user command",
+      "Interpret simple commands",
+      "Read the current robot state",
+      "Create the movement intention",
+      "Request proposals from joint agents",
+      "Validate the final plan",
+      "Send the plan to the robot",
+      "Receive feedback"
     ],
     "can_do": [
-      "Aceitar ou recusar plano por seguranca",
-      "Enviar comandos para MockRobot ou ArduinoRobot"
+      "Accept or reject plans for safety",
+      "Send commands to MockRobot or ArduinoRobot"
     ],
     "cannot_do": [
-      "Mover servos diretamente",
-      "Ignorar limites das articulacoes"
+      "Move servos directly",
+      "Ignore joint limits"
     ]
   },
   "BaseJointAgent": {
-    "role": "Agente da base",
+    "role": "Base joint agent",
     "limits": {
       "min_angle": 0,
       "max_angle": 180
     },
     "responsibilities": [
-      "Cuidar da rotacao horizontal",
-      "Sugerir angulo da base",
-      "Verificar limite da base",
-      "Avisar se a base nao pode fazer o movimento"
+      "Handle horizontal rotation",
+      "Suggest the base angle",
+      "Check base limits",
+      "Report when the base cannot perform the move"
     ]
   },
   "ShoulderJointAgent": {
-    "role": "Agente do ombro",
+    "role": "Shoulder joint agent",
     "limits": {
       "min_angle": 20,
       "max_angle": 160
     },
     "responsibilities": [
-      "Cuidar da subida e descida principal",
-      "Sugerir angulo do ombro",
-      "Evitar descer demais",
-      "Verificar limite do ombro"
+      "Handle the main lift/lower motion",
+      "Suggest the shoulder angle",
+      "Avoid lowering too far",
+      "Check shoulder limits"
     ]
   },
   "ElbowJointAgent": {
-    "role": "Agente do cotovelo",
+    "role": "Elbow joint agent",
     "limits": {
       "min_angle": 15,
       "max_angle": 165
     },
     "responsibilities": [
-      "Cuidar do alcance do braco",
-      "Sugerir extensao ou recolhimento",
-      "Verificar limite do cotovelo",
-      "Evitar extensao perigosa"
+      "Handle arm reach",
+      "Suggest extension or retraction",
+      "Check elbow limits",
+      "Avoid dangerous extension"
     ]
   },
   "WristJointAgent": {
-    "role": "Agente do punho",
+    "role": "Wrist joint agent",
     "limits": {
       "min_angle": 0,
       "max_angle": 180
     },
     "responsibilities": [
-      "Cuidar da inclinacao da garra",
-      "Manter a garra alinhada",
-      "Compensar ombro e cotovelo",
-      "Verificar limite do punho"
+      "Handle gripper tilt",
+      "Keep the gripper aligned",
+      "Compensate shoulder and elbow motion",
+      "Check wrist limits"
     ]
   },
   "GripperAgent": {
-    "role": "Agente da garra",
+    "role": "Gripper agent",
     "limits": {
       "open_angle": 80,
       "closed_angle": 25
     },
     "responsibilities": [
-      "Abrir garra",
-      "Fechar garra",
-      "Segurar peca",
-      "Soltar peca",
-      "Evitar esmagar peca"
+      "Open the gripper",
+      "Close the gripper",
+      "Hold the piece",
+      "Release the piece",
+      "Avoid crushing the piece"
     ]
   },
   "MotionCoordinatorAgent": {
-    "role": "Coordenador tecnico do movimento",
+    "role": "Technical motion coordinator",
     "responsibilities": [
-      "Receber propostas dos JointAgents",
-      "Juntar as propostas",
-      "Detectar conflitos",
-      "Corrigir conflitos simples",
-      "Sincronizar velocidades",
-      "Gerar plano completo",
-      "Devolver plano ao SupervisorAgent"
+      "Receive proposals from JointAgents",
+      "Merge proposals",
+      "Detect conflicts",
+      "Correct simple conflicts",
+      "Synchronize speeds",
+      "Generate the complete plan",
+      "Return the plan to SupervisorAgent"
     ]
   }
 }

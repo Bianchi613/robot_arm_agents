@@ -13,7 +13,7 @@ from app.supervisor.supervisor_agent import SupervisorAgent
 
 
 def main() -> None:
-    command = " ".join(sys.argv[1:]).strip() or "mover peao branco A2 A4"
+    command = " ".join(sys.argv[1:]).strip() or "move white pawn A2 A4"
     try:
         supervisor = SupervisorAgent.from_default_config()
     except RuntimeError as error:
@@ -67,12 +67,12 @@ def main() -> None:
             "feedback": None,
             "chess": agent_chess_result,
         }
-        _print_result("resposta do agente", agent_result)
+        _print_result("agent response", agent_result)
         return
 
     agent_result = _execute_chess_move(supervisor, agent_chess_result)
     agent_result["chess"] = agent_chess_result
-    _print_result("resposta do agente", agent_result)
+    _print_result("agent response", agent_result)
 
 
 def _execute_chess_move(supervisor: SupervisorAgent, chess_result: dict) -> dict:
@@ -92,35 +92,35 @@ def _execute_chess_move(supervisor: SupervisorAgent, chess_result: dict) -> dict
 
 
 def _print_result(command: str, result: dict) -> None:
-    print(f"Comando: {command}")
+    print(f"Command: {command}")
     print(f"Status: {result['status']}")
-    print(f"Mensagem: {result['message']}")
+    print(f"Message: {result['message']}")
     chess_result = result.get("chess") or {}
     if chess_result:
-        print("Xadrez:")
+        print("Chess:")
         print(f"  status: {chess_result.get('status')}")
         if chess_result.get("origin"):
-            print(f"  tipo: {chess_result.get('move_type')}")
-            print(f"  peca: {chess_result.get('piece')}")
-            print(f"  cor: {chess_result.get('piece_color')}")
-            print(f"  origem: {chess_result.get('origin')}")
-            print(f"  destino: {chess_result.get('destination')}")
+            print(f"  move_type: {chess_result.get('move_type')}")
+            print(f"  piece: {chess_result.get('piece')}")
+            print(f"  color: {chess_result.get('piece_color')}")
+            print(f"  origin: {chess_result.get('origin')}")
+            print(f"  destination: {chess_result.get('destination')}")
             if chess_result.get("captured_piece"):
-                print(f"  peca_capturada: {chess_result.get('captured_piece')}")
+                print(f"  captured_piece: {chess_result.get('captured_piece')}")
             if chess_result.get("decision_source"):
-                print(f"  decisao: {chess_result.get('decision_source')}")
-                print(f"  motivo: {chess_result.get('decision_reason')}")
-            print(f"  xeque: {chess_result.get('check')}")
-            print(f"  xeque_mate: {chess_result.get('checkmate')}")
-    print("Plano:")
+                print(f"  decision: {chess_result.get('decision_source')}")
+                print(f"  reason: {chess_result.get('decision_reason')}")
+            print(f"  check: {chess_result.get('check')}")
+            print(f"  checkmate: {chess_result.get('checkmate')}")
+    print("Plan:")
     joint_proposals = result.get("plan", {}).get("joint_proposals", [])
     if joint_proposals:
         llm_count = sum(1 for proposal in joint_proposals if proposal.get("llm_used"))
-        print(f"  agentes_qwen: {llm_count}/{len(joint_proposals)}")
+        print(f"  qwen_agents: {llm_count}/{len(joint_proposals)}")
     if result.get("plan", {}).get("coordinator_agent"):
-        print(f"  coordenador_qwen: {result['plan']['coordinator_agent']}")
+        print(f"  qwen_coordinator: {result['plan']['coordinator_agent']}")
     if result.get("plan", {}).get("llm_review"):
-        print(f"  revisao_qwen: {result['plan']['llm_review']}")
+        print(f"  qwen_review: {result['plan']['llm_review']}")
     for step in result.get("plan", {}).get("steps", []):
         target = step["target"]
         if target["type"] == "pose":
@@ -129,23 +129,23 @@ def _print_result(command: str, result: dict) -> None:
             print(f"  - {step['name']}: {target['action']}")
     print("Feedback:")
     feedback = result.get("feedback") or {}
-    print(f"  peca_movida: {feedback.get('peca_movida')}")
-    print(f"  origem: {feedback.get('origem')}")
-    print(f"  destino: {feedback.get('destino')}")
+    print(f"  piece_moved: {feedback.get('piece_moved')}")
+    print(f"  origin: {feedback.get('origin')}")
+    print(f"  destination: {feedback.get('destination')}")
     print(f"  holding_piece: {feedback.get('holding_piece')}")
     print(f"  status: {feedback.get('status')}")
     if feedback.get("captured_pieces") is not None:
-        print(f"  capturadas: {feedback.get('captured_pieces')}")
+        print(f"  captured: {feedback.get('captured_pieces')}")
     if feedback.get("message"):
-        print(f"  mensagem: {feedback.get('message')}")
-    print(f"  antes: {_board_summary(feedback, 'board_before')}")
-    print(f"  depois: {_board_summary(feedback, 'board_after')}")
+        print(f"  message: {feedback.get('message')}")
+    print(f"  before: {_board_summary(feedback, 'board_before')}")
+    print(f"  after: {_board_summary(feedback, 'board_after')}")
 
 
 def _board_summary(feedback: dict, key: str) -> dict | None:
     board = feedback.get(key)
-    origin = feedback.get("origem")
-    destination = feedback.get("destino")
+    origin = feedback.get("origin")
+    destination = feedback.get("destination")
     if not board or not origin or not destination:
         return None
     return {

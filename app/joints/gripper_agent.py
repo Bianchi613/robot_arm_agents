@@ -5,20 +5,20 @@ class GripperAgent:
         self.fallback_enabled = fallback_enabled
 
     def propose(self, intention: dict, state: dict) -> dict:
-        reason = "Abrir, segurar a peca, mover e soltar no destino."
+        reason = "Open, hold the piece, move it, and release it at the destination."
         llm_used = False
         if self.llm:
             response = self.llm.generate_json(
-                "Voce e o GripperAgent de um braco robotico de xadrez. "
-                "Responda somente JSON puro. "
-                "Formato: {\"reason\":\"...\"}. "
-                f"Intencao: {intention}. Estado: {state}."
+                "You are the GripperAgent for a chess robot arm. "
+                "Return only pure JSON. "
+                "Format: {\"reason\":\"...\"}. "
+                f"Intention: {intention}. State: {state}."
             )
             if response and response.get("reason"):
                 reason = response["reason"]
                 llm_used = True
             elif not self.fallback_enabled:
-                raise RuntimeError("Qwen/Ollama nao respondeu ao GripperAgent.")
+                raise RuntimeError("Qwen/Ollama did not answer GripperAgent.")
 
         return {
             "joint": "gripper",

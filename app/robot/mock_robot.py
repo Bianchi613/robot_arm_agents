@@ -64,9 +64,9 @@ class MockRobot:
                 "executed": False,
                 "executed_steps": [],
                 "history": [],
-                "peca_movida": False,
-                "origem": plan.get("origin"),
-                "destino": plan.get("destination"),
+                "piece_moved": False,
+                "origin": plan.get("origin"),
+                "destination": plan.get("destination"),
                 "holding_piece": self.holding_piece,
                 "status": "blocked",
                 "message": preflight_error,
@@ -105,9 +105,9 @@ class MockRobot:
             "executed": True,
             "executed_steps": executed_steps,
             "history": history,
-            "peca_movida": piece_moved,
-            "origem": origin,
-            "destino": destination,
+            "piece_moved": piece_moved,
+            "origin": origin,
+            "destination": destination,
             "holding_piece": self.holding_piece,
             "status": "ok" if piece_moved else "warning",
             "board_before": board_before,
@@ -120,17 +120,17 @@ class MockRobot:
         origin = plan.get("origin")
         destination = plan.get("destination")
         if origin not in self.board:
-            return f"Origem ausente no tabuleiro simulado: {origin}"
+            return f"Origin is missing from the simulated board: {origin}"
         if destination not in self.board:
-            return f"Destino ausente no tabuleiro simulado: {destination}"
+            return f"Destination is missing from the simulated board: {destination}"
         if self.board.get(origin) is None:
-            return f"Nao existe peca na origem: {origin}"
+            return f"No piece at origin: {origin}"
         if plan.get("move_type") == "capture":
             if self.board.get(destination) is None:
-                return f"Nao existe peca para capturar em: {destination}"
+                return f"No piece to capture at destination: {destination}"
             return None
         if self.board.get(destination) is not None:
-            return f"Destino ocupado: {destination}"
+            return f"Destination is occupied: {destination}"
         return None
 
     def _move_to_pose(self, target: dict) -> None:

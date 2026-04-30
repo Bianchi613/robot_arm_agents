@@ -124,14 +124,14 @@ class SupervisorAgent:
         if feedback.get("status") != "ok":
             return {
                 "status": feedback.get("status", "warning"),
-                "message": feedback.get("message", "Execucao simulada nao concluida."),
+                "message": feedback.get("message", "Simulated execution was not completed."),
                 "plan": plan,
                 "feedback": feedback,
             }
 
         return {
             "status": "ok",
-            "message": "Plano executado no MockRobot.",
+            "message": "Plan executed in MockRobot.",
             "plan": plan,
             "feedback": feedback,
         }
@@ -140,11 +140,11 @@ class SupervisorAgent:
         fallback_enabled = llm_config.get("fallback_to_rule_parser", False)
         if not llm_config.get("enabled"):
             if not fallback_enabled:
-                raise RuntimeError("Ollama/Qwen esta desativado e os agentes exigem IA.")
+                raise RuntimeError("Ollama/Qwen is disabled and the agents require AI.")
             return None
         if llm_config.get("provider") != "ollama":
             if not fallback_enabled:
-                raise RuntimeError("Provider LLM invalido e os agentes exigem Ollama/Qwen.")
+                raise RuntimeError("Invalid LLM provider; agents require Ollama/Qwen.")
             return None
         client = OllamaClient(
             base_url=llm_config.get("base_url", "http://localhost:11434"),
@@ -155,29 +155,29 @@ class SupervisorAgent:
             return client
         if fallback_enabled:
             return None
-        raise RuntimeError("Ollama/Qwen nao esta disponivel e fallback esta desativado.")
+        raise RuntimeError("Ollama/Qwen is unavailable and fallback is disabled.")
 
     def _review_plan_with_llm(self, intention: dict, plan: dict) -> str | None:
         if not self.llm:
             if self.llm_fallback_enabled:
                 return None
-            return "Qwen/Ollama nao esta disponivel para revisar o plano."
+            return "Qwen/Ollama is unavailable for plan review."
 
         review = self.llm.review_motion_plan(intention=intention, plan=plan)
         if not review:
             if self.llm_fallback_enabled:
                 return None
-            return "Qwen/Ollama nao respondeu a revisao do plano."
+            return "Qwen/Ollama did not answer the plan review."
 
         plan["llm_review"] = review
         if review.get("approved") is False:
-            return review.get("reason", "Qwen rejeitou o plano.")
+            return review.get("reason", "Qwen rejected the plan.")
         return None
 
     def _parse_command(self, command: str) -> dict:
         parts = command.strip().upper().split()
-        if len(parts) != 5 or parts[0] != "MOVER":
-            raise ValueError("Use o formato: mover peao branco A2 A4")
+        if len(parts) != 5 or parts[0] not in {"MOVE", "MOVER"}:
+            raise ValueError("Use format: move white pawn A2 A4")
 
         origin = parts[3]
         destination = parts[4]
@@ -217,12 +217,12 @@ class SupervisorAgent:
 
     def _validate_square(self, square: str) -> None:
         if len(square) != 2:
-            raise ValueError(f"Casa invalida: {square}")
+            raise ValueError(f"Invalid square: {square}")
 
         column = square[0]
         row = square[1]
         if column < "A" or column > "H" or row < "1" or row > "8":
-            raise ValueError(f"Casa fora do tabuleiro: {square}")
+            raise ValueError(f"Square outside board: {square}")
 
     def _validate_plan(self, plan: dict) -> str | None:
         if plan["status"] != "ready":
@@ -232,11 +232,11 @@ class SupervisorAgent:
             target = step["target"]
             if target["type"] == "gripper":
                 if not 0 <= target["angle"] <= 180:
-                    return f"Angulo inseguro em {step['name']}: {target['angle']}"
+                    return f"Unsafe angle in {step['name']}: {target['angle']}"
                 continue
 
             for joint, angle in target["servos"].items():
                 if not 0 <= angle <= 180:
-                    return f"Angulo inseguro em {step['name']}:{joint}: {angle}"
+                    return f"Unsafe angle in {step['name']}:{joint}: {angle}"
 
         return None

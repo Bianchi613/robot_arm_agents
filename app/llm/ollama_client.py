@@ -22,11 +22,11 @@ class OllamaClient:
 
     def parse_robot_command(self, command: str) -> dict | None:
         prompt = (
-            "Converta o comando do usuario em JSON puro para um braco robotico. "
-            "Responda somente JSON, sem markdown. "
-            "Formato esperado: "
+            "Convert the user command into pure JSON for a robot arm. "
+            "Return only JSON, without markdown. "
+            "Expected format: "
             "{\"action\":\"move_piece\",\"origin\":\"A2\",\"destination\":\"A4\"}. "
-            f"Comando: {command}"
+            f"Command: {command}"
         )
         response = self._generate(prompt)
         if not response:
@@ -69,23 +69,23 @@ class OllamaClient:
 
     def propose_joint_move(self, agent_name: str, intention: dict, state: dict, limits: dict) -> dict | None:
         prompt = (
-            "Voce e um agente de articulacao de um braco robotico para xadrez. "
-            "Responda somente JSON puro, sem markdown. "
-            "Crie uma proposta segura para esta articulacao. "
-            "Campos obrigatorios: joint, angle, speed, reason. "
-            f"Agente: {agent_name}. "
-            f"Limites: {json.dumps(limits)}. "
-            f"Intencao: {json.dumps(intention)}. "
-            f"Estado: {json.dumps(state)}."
+            "You are a joint agent for a chess-playing robot arm. "
+            "Return only pure JSON, without markdown. "
+            "Create a safe proposal for this joint. "
+            "Required fields: joint, angle, speed, reason. "
+            f"Agent: {agent_name}. "
+            f"Limits: {json.dumps(limits)}. "
+            f"Intention: {json.dumps(intention)}. "
+            f"State: {json.dumps(state)}."
         )
         return self.generate_json(prompt)
 
     def choose_chess_move(self, board_fen: str, legal_moves: list[str]) -> dict | None:
         prompt = (
-            "Voce e o agente adversario de xadrez de um braco robotico. "
-            "Escolha exatamente uma jogada da lista de legal_moves. "
-            "Responda somente JSON puro, sem markdown. "
-            "Formato: {\"move\":\"e7e5\",\"reason\":\"...\"}. "
+            "You are the chess opponent agent for a robot arm. "
+            "Choose exactly one move from legal_moves. "
+            "Return only pure JSON, without markdown. "
+            "Format: {\"move\":\"e7e5\",\"reason\":\"...\"}. "
             f"FEN: {board_fen}. "
             f"legal_moves: {json.dumps(legal_moves)}."
         )
@@ -93,11 +93,11 @@ class OllamaClient:
 
     def review_motion_plan(self, intention: dict, plan: dict) -> dict | None:
         prompt = (
-            "Voce e um supervisor de seguranca de um braco robotico. "
-            "Revise o plano fisico abaixo e responda somente JSON puro. "
-            "Formato: {\"approved\":true,\"reason\":\"...\"}. "
-            f"Intencao: {json.dumps(intention)}. "
-            f"Plano: {json.dumps(plan)}."
+            "You are a safety supervisor for a robot arm. "
+            "Review the physical plan below and return only pure JSON. "
+            "Format: {\"approved\":true,\"reason\":\"...\"}. "
+            f"Intention: {json.dumps(intention)}. "
+            f"Plan: {json.dumps(plan)}."
         )
         return self.generate_json(prompt)
 
@@ -118,14 +118,14 @@ class OllamaClient:
             for proposal in proposals
         ]
         prompt = (
-            "Voce e o MotionCoordinatorAgent de um braco robotico que joga xadrez. "
-            "Sua funcao e revisar a coordenacao tecnica entre propostas de articulacoes "
-            "e etapas fisicas. Nao invente casas nem servos novos. "
-            "Responda somente JSON puro, sem markdown. "
-            "Formato: {\"approved\":true,\"reason\":\"...\",\"risk\":\"low|medium|high\"}. "
-            f"Intencao: {json.dumps(intention)}. "
-            f"Propostas: {json.dumps(compact_proposals)}. "
-            f"Etapas: {json.dumps(step_names)}."
+            "You are the MotionCoordinatorAgent for a chess-playing robot arm. "
+            "Your job is to review the technical coordination between joint proposals "
+            "and physical steps. Do not invent new squares or servos. "
+            "Return only pure JSON, without markdown. "
+            "Format: {\"approved\":true,\"reason\":\"...\",\"risk\":\"low|medium|high\"}. "
+            f"Intention: {json.dumps(intention)}. "
+            f"Proposals: {json.dumps(compact_proposals)}. "
+            f"Steps: {json.dumps(step_names)}."
         )
         return self.generate_json(prompt)
 

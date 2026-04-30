@@ -24,7 +24,7 @@ class ChessGame:
         if move not in self.board.legal_moves:
             return {
                 "status": "rejected",
-                "message": f"Lance invalido no xadrez: {origin} -> {destination}",
+                "message": f"Illegal chess move: {origin} -> {destination}",
             }
 
         moving_piece = self.board.piece_at(chess.parse_square(origin.lower()))
@@ -33,8 +33,8 @@ class ChessGame:
             return {
                 "status": "rejected",
                 "message": (
-                    f"Peca declarada nao confere: voce informou {expected_piece_type}, "
-                    f"mas em {origin} existe {self._piece_label(moving_piece)}."
+                    f"Declared piece type mismatch: command says {expected_piece_type}, "
+                    f"but {origin} contains {self._piece_label(moving_piece)}."
                 ),
             }
         actual_piece_color = self._piece_color(moving_piece)
@@ -42,29 +42,29 @@ class ChessGame:
             return {
                 "status": "rejected",
                 "message": (
-                    f"Cor declarada nao confere: voce informou {expected_piece_color}, "
-                    f"mas em {origin} existe {self._piece_label(moving_piece)}."
+                    f"Declared piece color mismatch: command says {expected_piece_color}, "
+                    f"but {origin} contains {self._piece_label(moving_piece)}."
                 ),
             }
 
         return self._apply_move(
             move=move,
-            normal_message="Lance normal validado pelo ChessGame.",
-            capture_message="Captura validada pelo ChessGame.",
+            normal_message="Normal move validated by ChessGame.",
+            capture_message="Capture validated by ChessGame.",
         )
 
     def choose_agent_move(self) -> dict:
         if self.board.is_game_over():
             return {
                 "status": "rejected",
-                "message": "A partida ja terminou.",
+                "message": "The game is already over.",
             }
 
         move, decision_source, decision_reason = self._select_agent_move()
         result = self._apply_move(
             move=move,
-            normal_message="Jogada de resposta escolhida pelo ChessGame.",
-            capture_message="Captura de resposta escolhida pelo ChessGame.",
+            normal_message="Response move selected by ChessGame.",
+            capture_message="Response capture selected by ChessGame.",
         )
         result["decision_source"] = decision_source
         result["decision_reason"] = decision_reason
@@ -76,7 +76,7 @@ class ChessGame:
         if qwen_move:
             return qwen_move, "qwen2.5-coder:7b", qwen_reason
         if not self.fallback_enabled:
-            raise RuntimeError("Qwen/Ollama nao escolheu jogada e fallback esta desativado.")
+            raise RuntimeError("Qwen/Ollama did not choose a move and fallback is disabled.")
 
         preferred_moves = [
             "e7e5",
@@ -91,11 +91,11 @@ class ChessGame:
         legal_by_uci = {move.uci(): move for move in legal_moves}
         for move_uci in preferred_moves:
             if move_uci in legal_by_uci:
-                return legal_by_uci[move_uci], "fallback_rule", "Primeira jogada preferida disponivel."
+                return legal_by_uci[move_uci], "fallback_rule", "First available preferred move."
         return (
             sorted(legal_moves, key=lambda legal_move: legal_move.uci())[0],
             "fallback_rule",
-            "Primeira jogada legal em ordem alfabetica.",
+            "First legal move in alphabetical order.",
         )
 
     def _select_qwen_agent_move(self, legal_moves: list[chess.Move]) -> tuple[chess.Move | None, str]:
@@ -111,21 +111,21 @@ class ChessGame:
             return None, ""
 
         move_uci = str(response.get("move", "")).lower()
-        return legal_by_uci.get(move_uci), response.get("reason", "Jogada escolhida pelo Qwen.")
+        return legal_by_uci.get(move_uci), response.get("reason", "Move selected by Qwen.")
 
     def _parse_command_with_qwen(self, command: str) -> tuple[str, str, str, str] | None:
         if not self.llm:
             return None
 
         parsed = self.llm.generate_json(
-            "Voce e um agente interpretador de comandos de xadrez. "
-            "Converta o comando em JSON puro, sem markdown. "
-            "Formato obrigatorio: {\"origin\":\"A2\",\"destination\":\"A4\","
+            "You are a chess command parser. "
+            "Convert the command into pure JSON without markdown. "
+            "Required format: {\"origin\":\"A2\",\"destination\":\"A4\","
             "\"piece_type\":\"pawn\",\"piece_color\":\"white\"}. "
-            "piece_type pode ser pawn, knight, bishop, rook, queen, king. "
-            "piece_color pode ser white ou black. "
-            "Se o comando nao informar tipo e cor da peca, responda {\"error\":\"missing_piece_identity\"}. "
-            f"Comando: {command}"
+            "piece_type must be pawn, knight, bishop, rook, queen, or king. "
+            "piece_color must be white or black. "
+            "If the command does not include piece type and color, return {\"error\":\"missing_piece_identity\"}. "
+            f"Command: {command}"
         )
         if not parsed:
             return None
@@ -211,12 +211,16 @@ class ChessGame:
 
     def _parse_command(self, command: str) -> tuple[str, str, str, str]:
         parts = command.strip().upper().split()
-        if len(parts) == 5 and parts[0] == "MOVER":
-            expected_piece_type = self._normalize_piece_name(parts[1])
-            expected_piece_color = self._normalize_color_name(parts[2])
+        if len(parts) == 5 and parts[0] in {"MOVE", "MOVER"}:
+            if self._is_color_name(parts[1]):
+                expected_piece_color = self._normalize_color_name(parts[1])
+                expected_piece_type = self._normalize_piece_name(parts[2])
+            else:
+                expected_piece_type = self._normalize_piece_name(parts[1])
+                expected_piece_color = self._normalize_color_name(parts[2])
             origin, destination = parts[3], parts[4]
         else:
-            raise ValueError("Use o formato: mover peao branco A2 A4")
+            raise ValueError("Use format: move white pawn A2 A4")
 
         self._validate_square(origin)
         self._validate_square(destination)
@@ -226,7 +230,6 @@ class ChessGame:
         piece_key = self._strip_accents(piece_name.strip().upper())
         names = {
             "PEAO": "pawn",
-            "PEÃO": "pawn",
             "PAWN": "pawn",
             "CAVALO": "knight",
             "KNIGHT": "knight",
@@ -241,7 +244,7 @@ class ChessGame:
             "KING": "king",
         }
         if piece_key not in names:
-            raise ValueError(f"Tipo de peca desconhecido: {piece_name}")
+            raise ValueError(f"Unknown piece type: {piece_name}")
         return names[piece_key]
 
     def _normalize_color_name(self, color_name: str) -> str:
@@ -253,9 +256,14 @@ class ChessGame:
             "PRETA": "black",
             "BLACK": "black",
         }
-        if color_name not in names:
-            raise ValueError(f"Cor de peca desconhecida: {color_name}")
-        return names[color_name]
+        color_key = self._strip_accents(color_name.strip().upper())
+        if color_key not in names:
+            raise ValueError(f"Unknown piece color: {color_name}")
+        return names[color_key]
+
+    def _is_color_name(self, value: str) -> bool:
+        color_key = self._strip_accents(value.strip().upper())
+        return color_key in {"BRANCO", "BRANCA", "WHITE", "PRETO", "PRETA", "BLACK"}
 
     def _strip_accents(self, value: str) -> str:
         normalized = unicodedata.normalize("NFKD", value)
@@ -263,9 +271,9 @@ class ChessGame:
 
     def _validate_square(self, square: str) -> None:
         if len(square) != 2:
-            raise ValueError(f"Casa invalida: {square}")
+            raise ValueError(f"Invalid square: {square}")
 
         column = square[0]
         row = square[1]
         if column < "A" or column > "H" or row < "1" or row > "8":
-            raise ValueError(f"Casa fora do tabuleiro: {square}")
+            raise ValueError(f"Square outside board: {square}")

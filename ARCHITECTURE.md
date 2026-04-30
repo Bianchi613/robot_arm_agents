@@ -1,13 +1,13 @@
-# Arquitetura
+# Architecture
 
 ![Robot Arm Agents flow](docs/robot_arm_agents.png)
 
-## Visao Geral
+## Overview
 
-O projeto separa regras de xadrez, planejamento da missao fisica e execucao do robo.
+The project separates chess rules, AI agent planning, physical motion coordination, and robot execution.
 
 ```txt
-Usuario
+User
   ->
 main.py
   ->
@@ -21,112 +21,111 @@ MotionCoordinatorAgent
   ->
 SupervisorAgent
   ->
-MockRobot / ArduinoRobot futuro
+MockRobot
   ->
 Feedback
-  ->
-SupervisorAgent recebe feedback
 ```
 
-## Responsabilidades
+## Responsibilities
 
 `ChessGame`
 
-- recebe comandos completos como `mover peao branco A2 A4`
-- exige tipo e cor da peca no comando
-- valida regras de xadrez com `python-chess`
-- confere se a peca declarada bate com a casa de origem
-- escolhe uma jogada legal de resposta para o agente adversario
-- sabe de quem e a vez
-- detecta lance ilegal
-- detecta movimento normal
-- detecta captura
-- detecta xeque e xeque-mate
-- nao fala com servo nem Arduino
+- validates commands such as `move white pawn A2 A4`
+- requires piece type, color, origin, and destination
+- validates chess legality with `python-chess`
+- checks that declared piece identity matches the origin square
+- detects normal moves, captures, check, and checkmate
+- does not move servos
+- does not talk to Arduino
 
 `SupervisorAgent`
 
-- recebe uma intencao ja validada pelo xadrez
-- le o estado do robo
-- chama os agentes das articulacoes
-- recebe o plano do coordenador
-- usa Qwen para revisar o plano final quando fallback esta desligado
-- valida seguranca final
-- envia o plano ao robo
-- recebe feedback
+- receives a chess-validated intention
+- reads the robot state
+- calls the joint agents
+- receives the coordinated plan
+- asks Qwen to review the final plan
+- validates final safety constraints
+- sends the plan to the robot
+- receives feedback
 
 `JointAgents`
 
-- `BaseJointAgent`: rotacao horizontal
-- `ShoulderJointAgent`: subida e descida principal
-- `ElbowJointAgent`: alcance do braco
-- `WristJointAgent`: alinhamento da garra
-- `GripperAgent`: abrir e fechar garra
+- `BaseJointAgent`: horizontal rotation
+- `ShoulderJointAgent`: main lift/lower motion
+- `ElbowJointAgent`: arm reach
+- `WristJointAgent`: gripper alignment
+- `GripperAgent`: open and close gripper
 
 `MotionCoordinatorAgent`
 
-- recebe propostas dos agentes
-- detecta conflitos simples
-- usa Qwen para revisar a coordenacao tecnica do plano
-- usa `board_positions.json`
-- monta plano de movimento normal
-- monta plano de captura
+- receives joint proposals
+- detects simple conflicts
+- asks Qwen to review technical coordination
+- uses `board_positions.json`
+- builds normal move plans
+- builds capture plans
 
-## Modo IA Obrigatorio
+`MockRobot`
 
-Por padrao, `LLM_FALLBACK_TO_RULE_PARSER=false`.
+- simulates servos
+- simulates the physical board
+- simulates pick and drop
+- simulates captured-piece disposal in `CAPTURE_ZONE`
+- returns verifiable feedback
 
-Isso significa que os componentes com nome de agente precisam usar Qwen/Ollama:
+## Required AI Mode
+
+Default configuration:
 
 ```txt
+OLLAMA_ENABLED=true
+OLLAMA_MODEL=qwen2.5-coder:7b
+LLM_FALLBACK_TO_RULE_PARSER=false
+```
+
+Components with `Agent` in the name must use Qwen/Ollama:
+
+```txt
+SupervisorAgent
 BaseJointAgent
 ShoulderJointAgent
 ElbowJointAgent
 WristJointAgent
 GripperAgent
 MotionCoordinatorAgent
-SupervisorAgent
 ```
 
-Se o Qwen nao estiver disponivel, o sistema deve rejeitar/falhar claramente. Regras locais continuam existindo apenas como validacao de seguranca e como modo de emergencia quando o fallback for ligado manualmente.
+If Qwen is unavailable, the system must fail clearly. Local Python rules remain as safety validation and emergency fallback only when fallback is manually enabled.
 
-`MockRobot`
+## Normal Move
 
-- simula servos
-- simula o tabuleiro fisico
-- simula pegar e soltar peca
-- simula descarte em `CAPTURE_ZONE`
-- retorna feedback verificavel
-
-## Movimento Normal
-
-Comando:
+Command:
 
 ```txt
-mover peao branco A2 A4
+move white pawn A2 A4
 ```
 
-Fluxo:
+Flow:
 
 ```txt
-1. main.py recebe o comando
-2. ChessGame valida o lance
-3. ChessGame retorna:
-   origem = A2
-   destino = A4
-   tipo = normal
-   peca = white_pawn
-   cor = white
-4. SupervisorAgent recebe a intencao
-5. JointAgents sugerem movimentos
-6. MotionCoordinator monta o plano
-7. MockRobot executa
-8. Feedback confirma antes/depois
-9. ChessGame escolhe uma jogada legal de resposta
-10. SupervisorAgent executa a resposta do agente
+1. main.py receives the command
+2. ChessGame validates the move
+3. ChessGame returns:
+   origin = A2
+   destination = A4
+   move_type = normal
+   piece = white_pawn
+   color = white
+4. SupervisorAgent receives the intention
+5. JointAgents propose movements with Qwen
+6. MotionCoordinatorAgent coordinates the plan with Qwen
+7. SupervisorAgent reviews the plan with Qwen
+8. MockRobot executes
+9. Feedback confirms before/after state
 ```
 
-Plano fisico:
+Physical plan:
 
 ```txt
 go_home
@@ -142,46 +141,46 @@ clear_destination
 go_home
 ```
 
-## Lance Invalido
+## Invalid Move
 
-Comando:
-
-```txt
-mover peao branco A2 A5
-```
-
-Resultado:
+Command:
 
 ```txt
-ChessGame rejeita o lance
-SupervisorAgent nao e chamado
-MockRobot nao se mexe
+move white pawn A2 A5
 ```
 
-Se o comando vier sem peca e cor, por exemplo `mover A2 A5`, o `ChessGame` rejeita antes de consultar Qwen ou mover o braco.
-
-## Captura
-
-Exemplo:
+Result:
 
 ```txt
-mover E2 E4
-mover D7 D5
-mover E4 D5
+ChessGame rejects the move
+SupervisorAgent is not called
+MockRobot does not move
 ```
 
-O `ChessGame` identifica que `E4 -> D5` e captura.
+If the command is missing piece identity, for example `move A2 A4`, `ChessGame` rejects it before the robot moves.
 
-O plano fisico faz duas missoes:
+## Capture
+
+Example sequence in a persistent game process:
 
 ```txt
-1. remover a peca capturada de D5
-2. levar a peca capturada para CAPTURE_ZONE
-3. pegar a peca atacante em E4
-4. mover a peca atacante para D5
+move white pawn E2 E4
+move black pawn D7 D5
+move white pawn E4 D5
 ```
 
-Plano fisico de captura:
+For `E4 -> D5`, `ChessGame` identifies a capture.
+
+The physical plan does two jobs:
+
+```txt
+1. remove the captured piece from D5
+2. move the captured piece to CAPTURE_ZONE
+3. pick the attacking piece from E4
+4. move the attacking piece to D5
+```
+
+Capture plan:
 
 ```txt
 go_home
@@ -203,23 +202,23 @@ clear_destination
 go_home
 ```
 
-Feedback esperado:
+Expected feedback:
 
 ```txt
-antes: {'E4': 'white_pawn', 'D5': 'black_pawn'}
-depois: {'E4': None, 'D5': 'white_pawn'}
-capturadas: ['black_pawn']
+before: {'E4': 'white_pawn', 'D5': 'black_pawn'}
+after: {'E4': None, 'D5': 'white_pawn'}
+captured: ['black_pawn']
 ```
 
-## Mapa Fisico
+## Physical Map
 
-Arquivo:
+File:
 
 ```txt
 app/data/board_positions.json
 ```
 
-Contem:
+Contains:
 
 ```txt
 HOME
@@ -229,17 +228,4 @@ A1_ABOVE / A1_PICK / A1_DROP
 H8_ABOVE / H8_PICK / H8_DROP
 ```
 
-Os valores atuais sao aproximacoes para simulacao. No hardware real, esses valores precisam ser calibrados.
-
-## Estado Atual
-
-```txt
-OK  movimento normal
-OK  bloqueio de lance ilegal
-OK  deteccao de captura
-OK  captura fisica simulada
-OK  tabuleiro A1-H8 simulado
-PENDENTE  ArduinoRobot
-PENDENTE  persistencia da partida entre execucoes separadas
-PENDENTE  calibracao fisica real
-```
+Current values are simulation approximations. Real hardware must replace them with measured calibration values.
