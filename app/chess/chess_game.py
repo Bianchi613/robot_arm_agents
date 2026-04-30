@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import chess
 
 
@@ -11,9 +13,9 @@ class ChessGame:
         try:
             qwen_parsed = self._parse_command_with_qwen(command)
             if qwen_parsed:
-                origin, destination, expected_piece_type = qwen_parsed
+                origin, destination, expected_piece_type, expected_piece_color = qwen_parsed
             else:
-                origin, destination, expected_piece_type = self._parse_command(command)
+                origin, destination, expected_piece_type, expected_piece_color = self._parse_command(command)
         except ValueError as error:
             return {
                 "status": "rejected",
@@ -34,6 +36,15 @@ class ChessGame:
                 "status": "rejected",
                 "message": (
                     f"Peca declarada nao confere: voce informou {expected_piece_type}, "
+                    f"mas em {origin} existe {self._piece_label(moving_piece)}."
+                ),
+            }
+        actual_piece_color = self._piece_color(moving_piece)
+        if expected_piece_color != actual_piece_color:
+            return {
+                "status": "rejected",
+                "message": (
+                    f"Cor declarada nao confere: voce informou {expected_piece_color}, "
                     f"mas em {origin} existe {self._piece_label(moving_piece)}."
                 ),
             }
@@ -104,30 +115,37 @@ class ChessGame:
         move_uci = str(response.get("move", "")).lower()
         return legal_by_uci.get(move_uci), response.get("reason", "Jogada escolhida pelo Qwen.")
 
-    def _parse_command_with_qwen(self, command: str) -> tuple[str, str, str | None] | None:
+    def _parse_command_with_qwen(self, command: str) -> tuple[str, str, str, str] | None:
         if not self.llm:
             return None
 
         parsed = self.llm.generate_json(
             "Voce e um agente interpretador de comandos de xadrez. "
             "Converta o comando em JSON puro, sem markdown. "
-            "Formato: {\"origin\":\"A2\",\"destination\":\"A4\",\"piece_type\":\"pawn\"}. "
-            "piece_type pode ser pawn, knight, bishop, rook, queen, king ou null. "
+            "Formato obrigatorio: {\"origin\":\"A2\",\"destination\":\"A4\","
+            "\"piece_type\":\"pawn\",\"piece_color\":\"white\"}. "
+            "piece_type pode ser pawn, knight, bishop, rook, queen, king. "
+            "piece_color pode ser white ou black. "
+            "Se o comando nao informar tipo e cor da peca, responda {\"error\":\"missing_piece_identity\"}. "
             f"Comando: {command}"
         )
         if not parsed:
             return None
+        if parsed.get("error"):
+            return None
 
         origin = str(parsed.get("origin", "")).upper()
         destination = str(parsed.get("destination", "")).upper()
-        piece_type = parsed.get("piece_type")
-        expected_piece_type = str(piece_type).lower() if piece_type else None
-        if expected_piece_type in {"none", "null", ""}:
-            expected_piece_type = None
+        expected_piece_type = str(parsed.get("piece_type", "")).lower()
+        expected_piece_color = str(parsed.get("piece_color", "")).lower()
+        if expected_piece_type not in {"pawn", "knight", "bishop", "rook", "queen", "king"}:
+            return None
+        if expected_piece_color not in {"white", "black"}:
+            return None
 
         self._validate_square(origin)
         self._validate_square(destination)
-        return origin, destination, expected_piece_type
+        return origin, destination, expected_piece_type, expected_piece_color
 
     def _apply_move(
         self,
@@ -193,23 +211,18 @@ class ChessGame:
         }
         return names[piece.piece_type]
 
-    def _parse_command(self, command: str) -> tuple[str, str, str | None]:
+    def _parse_command(self, command: str) -> tuple[str, str, str, str]:
         parts = command.strip().upper().split()
-        if len(parts) == 2:
-            origin, destination = parts
-            expected_piece_type = None
-        elif len(parts) == 3 and parts[0] == "MOVER":
-            origin, destination = parts[1], parts[2]
-            expected_piece_type = None
-        elif len(parts) == 4 and parts[0] == "MOVER":
+        if len(parts) == 5 and parts[0] == "MOVER":
             expected_piece_type = self._normalize_piece_name(parts[1])
-            origin, destination = parts[2], parts[3]
+            expected_piece_color = self._normalize_color_name(parts[2])
+            origin, destination = parts[3], parts[4]
         else:
-            raise ValueError("Use o formato: mover A2 A4 ou mover peao A2 A4")
+            raise ValueError("Use o formato: mover peao branco A2 A4")
 
         self._validate_square(origin)
         self._validate_square(destination)
-        return origin, destination, expected_piece_type
+        return origin, destination, expected_piece_type, expected_piece_color
 
     def _normalize_piece_name(self, piece_name: str) -> str:
         names = {
@@ -231,6 +244,19 @@ class ChessGame:
         if piece_name not in names:
             raise ValueError(f"Tipo de peca desconhecido: {piece_name}")
         return names[piece_name]
+
+    def _normalize_color_name(self, color_name: str) -> str:
+        names = {
+            "BRANCO": "white",
+            "BRANCA": "white",
+            "WHITE": "white",
+            "PRETO": "black",
+            "PRETA": "black",
+            "BLACK": "black",
+        }
+        if color_name not in names:
+            raise ValueError(f"Cor de peca desconhecida: {color_name}")
+        return names[color_name]
 
     def _validate_square(self, square: str) -> None:
         if len(square) != 2:

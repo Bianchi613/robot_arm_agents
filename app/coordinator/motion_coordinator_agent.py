@@ -1,7 +1,15 @@
-class MotionCoordinator:
-    def __init__(self, config: dict, board_positions: dict) -> None:
+class MotionCoordinatorAgent:
+    def __init__(
+        self,
+        config: dict,
+        board_positions: dict,
+        llm=None,
+        fallback_enabled: bool = True,
+    ) -> None:
         self.config = config
         self.board_positions = board_positions
+        self.llm = llm
+        self.fallback_enabled = fallback_enabled
 
     def build_plan(self, intention: dict, proposals: list[dict], state: dict) -> dict:
         position_error = self._validate_positions(intention)
@@ -27,6 +35,23 @@ class MotionCoordinator:
         else:
             steps = self._normal_steps(origin, destination)
 
+        coordinator_review = self._coordinate_with_qwen(
+            intention=intention,
+            proposals=proposals,
+            steps=steps,
+        )
+        if coordinator_review and coordinator_review.get("approved") is False:
+            return {
+                "status": "blocked",
+                "message": coordinator_review.get("reason", "MotionCoordinatorAgent rejeitou o plano."),
+                "origin": origin,
+                "destination": destination,
+                "move_type": intention.get("move_type", "normal"),
+                "joint_proposals": proposals,
+                "coordinator_agent": coordinator_review,
+                "steps": [],
+            }
+
         return {
             "status": "ready",
             "message": "Plano coordenado com sucesso.",
@@ -34,8 +59,49 @@ class MotionCoordinator:
             "destination": destination,
             "move_type": intention.get("move_type", "normal"),
             "joint_proposals": proposals,
+            "coordinator_agent": coordinator_review or {
+                "approved": True,
+                "reason": "Coordenacao deterministica usada como fallback.",
+                "risk": "low",
+                "llm_used": False,
+            },
             "steps": steps,
         }
+
+    def _coordinate_with_qwen(
+        self,
+        intention: dict,
+        proposals: list[dict],
+        steps: list[dict],
+    ) -> dict | None:
+        if not self.llm:
+            if self.fallback_enabled:
+                return None
+            return {
+                "approved": False,
+                "reason": "Qwen/Ollama nao esta disponivel para o MotionCoordinatorAgent.",
+                "risk": "high",
+                "llm_used": False,
+            }
+
+        review = self.llm.coordinate_motion_plan(
+            intention=intention,
+            proposals=proposals,
+            step_names=[step["name"] for step in steps],
+        )
+        if not review:
+            if self.fallback_enabled:
+                return None
+            return {
+                "approved": False,
+                "reason": "Qwen/Ollama nao respondeu ao MotionCoordinatorAgent.",
+                "risk": "high",
+                "llm_used": False,
+            }
+
+        review["llm_used"] = True
+        review["agent"] = "MotionCoordinatorAgent"
+        return review
 
     def _normal_steps(self, origin: str, destination: str) -> list[dict]:
         return [

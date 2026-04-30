@@ -17,7 +17,7 @@ SupervisorAgent
   ->
 JointAgents
   ->
-MotionCoordinator
+MotionCoordinatorAgent
   ->
 SupervisorAgent
   ->
@@ -32,8 +32,8 @@ SupervisorAgent recebe feedback
 
 `ChessGame`
 
-- recebe comandos como `mover A2 A4`
-- aceita peca opcional, como `mover peao A2 A4`
+- recebe comandos completos como `mover peao branco A2 A4`
+- exige tipo e cor da peca no comando
 - valida regras de xadrez com `python-chess`
 - confere se a peca declarada bate com a casa de origem
 - escolhe uma jogada legal de resposta para o agente adversario
@@ -62,7 +62,7 @@ SupervisorAgent recebe feedback
 - `WristJointAgent`: alinhamento da garra
 - `GripperAgent`: abrir e fechar garra
 
-`MotionCoordinator`
+`MotionCoordinatorAgent`
 
 - recebe propostas dos agentes
 - detecta conflitos simples
@@ -83,7 +83,7 @@ SupervisorAgent recebe feedback
 Comando:
 
 ```txt
-mover A2 A4
+mover peao branco A2 A4
 ```
 
 Fluxo:

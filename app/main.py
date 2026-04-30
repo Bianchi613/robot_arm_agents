@@ -13,7 +13,7 @@ from app.supervisor.supervisor_agent import SupervisorAgent
 
 
 def main() -> None:
-    command = " ".join(sys.argv[1:]).strip() or "mover A2 A4"
+    command = " ".join(sys.argv[1:]).strip() or "mover peao branco A2 A4"
     supervisor = SupervisorAgent.from_default_config()
     chess_game = ChessGame(
         llm=supervisor.llm,
@@ -97,6 +97,8 @@ def _print_result(command: str, result: dict) -> None:
     if joint_proposals:
         llm_count = sum(1 for proposal in joint_proposals if proposal.get("llm_used"))
         print(f"  agentes_qwen: {llm_count}/{len(joint_proposals)}")
+    if result.get("plan", {}).get("coordinator_agent"):
+        print(f"  coordenador_qwen: {result['plan']['coordinator_agent']}")
     if result.get("plan", {}).get("llm_review"):
         print(f"  revisao_qwen: {result['plan']['llm_review']}")
     for step in result.get("plan", {}).get("steps", []):

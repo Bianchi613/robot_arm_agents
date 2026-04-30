@@ -17,7 +17,7 @@ SupervisorAgent
   ->
 JointAgents
   ->
-MotionCoordinator
+MotionCoordinatorAgent
   ->
 SupervisorAgent
   ->
@@ -65,7 +65,7 @@ robot_arm_agents/
     |   `-- gripper_agent.py
     |
     |-- coordinator/
-    |   `-- motion_coordinator.py
+    |   `-- motion_coordinator_agent.py
     |
     |-- robot/
     |   `-- mock_robot.py
@@ -104,7 +104,7 @@ O fluxo principal com `ChessGame` nao depende do Ollama. O LLM fica preparado pa
 Movimento normal:
 
 ```bash
-python app/main.py "mover A2 A4"
+python app/main.py "mover peao branco A2 A4"
 ```
 
 Esperado:
@@ -128,17 +128,25 @@ destino: E5
 depois: {'E7': None, 'E5': 'black_pawn'}
 ```
 
-Tambem pode informar a peca esperada:
+Exemplos de comandos validos:
 
 ```bash
-python app/main.py "mover peao A2 A4"
-python app/main.py "mover cavalo B1 C3"
+python app/main.py "mover peao branco A2 A4"
+python app/main.py "mover cavalo branco B1 C3"
+```
+
+O comando precisa informar peca e cor:
+
+```txt
+mover peao branco A2 A4
+mover cavalo branco B1 C3
+mover peao preto E7 E5
 ```
 
 Se a peca informada nao bater com a casa de origem, o `ChessGame` rejeita antes do braco se mexer:
 
 ```bash
-python app/main.py "mover cavalo A2 A4"
+python app/main.py "mover cavalo branco A2 A4"
 ```
 
 Esperado:

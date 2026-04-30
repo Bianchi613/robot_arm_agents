@@ -101,6 +101,34 @@ class OllamaClient:
         )
         return self.generate_json(prompt)
 
+    def coordinate_motion_plan(
+        self,
+        intention: dict,
+        proposals: list[dict],
+        step_names: list[str],
+    ) -> dict | None:
+        compact_proposals = [
+            {
+                "joint": proposal.get("joint"),
+                "angle": proposal.get("angle"),
+                "speed": proposal.get("speed"),
+                "llm_used": proposal.get("llm_used"),
+                "reason": proposal.get("reason"),
+            }
+            for proposal in proposals
+        ]
+        prompt = (
+            "Voce e o MotionCoordinatorAgent de um braco robotico que joga xadrez. "
+            "Sua funcao e revisar a coordenacao tecnica entre propostas de articulacoes "
+            "e etapas fisicas. Nao invente casas nem servos novos. "
+            "Responda somente JSON puro, sem markdown. "
+            "Formato: {\"approved\":true,\"reason\":\"...\",\"risk\":\"low|medium|high\"}. "
+            f"Intencao: {json.dumps(intention)}. "
+            f"Propostas: {json.dumps(compact_proposals)}. "
+            f"Etapas: {json.dumps(step_names)}."
+        )
+        return self.generate_json(prompt)
+
     def _generate(self, prompt: str) -> str | None:
         payload = json.dumps(
             {

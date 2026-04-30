@@ -94,7 +94,7 @@
       "Evitar esmagar peca"
     ]
   },
-  "MotionCoordinator": {
+  "MotionCoordinatorAgent": {
     "role": "Coordenador tecnico do movimento",
     "responsibilities": [
       "Receber propostas dos JointAgents",

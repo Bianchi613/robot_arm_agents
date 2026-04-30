@@ -1,1 +1,1 @@
-"""Motion coordination package."""
+"""Motion coordinator agent package."""

@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 from app.config.env_loader import env_bool, load_env_file
-from app.coordinator.motion_coordinator import MotionCoordinator
+from app.coordinator.motion_coordinator_agent import MotionCoordinatorAgent
 from app.joints.base_joint_agent import BaseJointAgent
 from app.joints.elbow_joint_agent import ElbowJointAgent
 from app.joints.gripper_agent import GripperAgent
@@ -29,9 +29,11 @@ class SupervisorAgent:
             WristJointAgent(config["WristJointAgent"], self.llm, self.llm_fallback_enabled),
             GripperAgent(config["GripperAgent"], self.llm, self.llm_fallback_enabled),
         ]
-        self.coordinator = MotionCoordinator(
-            config["MotionCoordinator"],
+        self.coordinator = MotionCoordinatorAgent(
+            config["MotionCoordinatorAgent"],
             config["board_positions"],
+            self.llm,
+            self.llm_fallback_enabled,
         )
 
     @classmethod
