@@ -18,12 +18,16 @@ class SupervisorAgent:
         self.config = config
         self.robot = robot
         self.llm = self._build_llm_client(config.get("llm", {}))
+        self.llm_fallback_enabled = config.get("llm", {}).get(
+            "fallback_to_rule_parser",
+            True,
+        )
         self.joint_agents = [
-            BaseJointAgent(config["BaseJointAgent"]),
-            ShoulderJointAgent(config["ShoulderJointAgent"]),
-            ElbowJointAgent(config["ElbowJointAgent"]),
-            WristJointAgent(config["WristJointAgent"]),
-            GripperAgent(config["GripperAgent"]),
+            BaseJointAgent(config["BaseJointAgent"], self.llm, self.llm_fallback_enabled),
+            ShoulderJointAgent(config["ShoulderJointAgent"], self.llm, self.llm_fallback_enabled),
+            ElbowJointAgent(config["ElbowJointAgent"], self.llm, self.llm_fallback_enabled),
+            WristJointAgent(config["WristJointAgent"], self.llm, self.llm_fallback_enabled),
+            GripperAgent(config["GripperAgent"], self.llm, self.llm_fallback_enabled),
         ]
         self.coordinator = MotionCoordinator(
             config["MotionCoordinator"],
@@ -60,6 +64,12 @@ class SupervisorAgent:
             "OLLAMA_MODEL",
             llm_config.get("model", "qwen2.5-coder:7b"),
         )
+        llm_config["timeout_seconds"] = float(
+            os.environ.get(
+                "OLLAMA_TIMEOUT_SECONDS",
+                llm_config.get("timeout_seconds", 5),
+            )
+        )
         llm_config["fallback_to_rule_parser"] = env_bool(
             "LLM_FALLBACK_TO_RULE_PARSER",
             bool(llm_config.get("fallback_to_rule_parser", True)),
@@ -89,6 +99,15 @@ class SupervisorAgent:
             proposals=proposals,
             state=state,
         )
+
+        llm_review_error = self._review_plan_with_llm(intention, plan)
+        if llm_review_error:
+            return {
+                "status": "rejected",
+                "message": llm_review_error,
+                "plan": plan,
+                "feedback": None,
+            }
 
         validation_error = self._validate_plan(plan)
         if validation_error:
@@ -120,10 +139,33 @@ class SupervisorAgent:
             return None
         if llm_config.get("provider") != "ollama":
             return None
-        return OllamaClient(
+        client = OllamaClient(
             base_url=llm_config.get("base_url", "http://localhost:11434"),
             model=llm_config.get("model", "qwen2.5-coder:7b"),
+            timeout=float(llm_config.get("timeout_seconds", 5)),
         )
+        if client.is_available():
+            return client
+        if llm_config.get("fallback_to_rule_parser", True):
+            return None
+        raise RuntimeError("Ollama/Qwen nao esta disponivel e fallback esta desativado.")
+
+    def _review_plan_with_llm(self, intention: dict, plan: dict) -> str | None:
+        if not self.llm:
+            if self.llm_fallback_enabled:
+                return None
+            return "Qwen/Ollama nao esta disponivel para revisar o plano."
+
+        review = self.llm.review_motion_plan(intention=intention, plan=plan)
+        if not review:
+            if self.llm_fallback_enabled:
+                return None
+            return "Qwen/Ollama nao respondeu a revisao do plano."
+
+        plan["llm_review"] = review
+        if review.get("approved") is False:
+            return review.get("reason", "Qwen rejeitou o plano.")
+        return None
 
     def _parse_command(self, command: str) -> dict:
         llm_intention = self._parse_with_llm(command)

@@ -14,7 +14,11 @@ from app.supervisor.supervisor_agent import SupervisorAgent
 
 def main() -> None:
     command = " ".join(sys.argv[1:]).strip() or "mover A2 A4"
-    chess_game = ChessGame()
+    supervisor = SupervisorAgent.from_default_config()
+    chess_game = ChessGame(
+        llm=supervisor.llm,
+        fallback_enabled=supervisor.llm_fallback_enabled,
+    )
     chess_result = chess_game.validate_command(command)
     if chess_result["status"] != "ok":
         result = {
@@ -27,7 +31,6 @@ def main() -> None:
         _print_result(command, result)
         return
 
-    supervisor = SupervisorAgent.from_default_config()
     result = _execute_chess_move(supervisor, chess_result)
     result["chess"] = chess_result
     _print_result(command, result)
@@ -84,9 +87,18 @@ def _print_result(command: str, result: dict) -> None:
             print(f"  destino: {chess_result.get('destination')}")
             if chess_result.get("captured_piece"):
                 print(f"  peca_capturada: {chess_result.get('captured_piece')}")
+            if chess_result.get("decision_source"):
+                print(f"  decisao: {chess_result.get('decision_source')}")
+                print(f"  motivo: {chess_result.get('decision_reason')}")
             print(f"  xeque: {chess_result.get('check')}")
             print(f"  xeque_mate: {chess_result.get('checkmate')}")
     print("Plano:")
+    joint_proposals = result.get("plan", {}).get("joint_proposals", [])
+    if joint_proposals:
+        llm_count = sum(1 for proposal in joint_proposals if proposal.get("llm_used"))
+        print(f"  agentes_qwen: {llm_count}/{len(joint_proposals)}")
+    if result.get("plan", {}).get("llm_review"):
+        print(f"  revisao_qwen: {result['plan']['llm_review']}")
     for step in result.get("plan", {}).get("steps", []):
         target = step["target"]
         if target["type"] == "pose":

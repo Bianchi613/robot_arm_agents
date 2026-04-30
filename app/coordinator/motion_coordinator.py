@@ -33,6 +33,7 @@ class MotionCoordinator:
             "origin": origin,
             "destination": destination,
             "move_type": intention.get("move_type", "normal"),
+            "joint_proposals": proposals,
             "steps": steps,
         }
 

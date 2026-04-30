@@ -1,8 +1,24 @@
-class ShoulderJointAgent:
-    def __init__(self, config: dict) -> None:
-        self.config = config
+from app.joints.qwen_joint_agent import QwenJointAgent
+
+
+class ShoulderJointAgent(QwenJointAgent):
+    def __init__(self, config: dict, llm=None, fallback_enabled: bool = True) -> None:
+        super().__init__(config=config, llm=llm, fallback_enabled=fallback_enabled)
 
     def propose(self, intention: dict, state: dict) -> dict:
+        limits = self.config["limits"]
+        qwen_proposal = self._require_or_fallback(
+            self._qwen_propose(
+                agent_name="ShoulderJointAgent",
+                joint="shoulder",
+                intention=intention,
+                state=state,
+                limits=limits,
+            )
+        )
+        if qwen_proposal:
+            return qwen_proposal
+
         row_index = int(intention["destination"][1]) - 1
         angle = 135 - round(row_index * (70 / 7))
 
@@ -11,6 +27,7 @@ class ShoulderJointAgent:
             "angle": self._clamp(angle),
             "speed": 0.35,
             "reason": "Ajustar altura principal para alcancar a linha de destino.",
+            "llm_used": False,
         }
 
     def _clamp(self, angle: int) -> int:

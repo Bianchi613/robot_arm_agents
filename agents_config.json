@@ -3,6 +3,7 @@
     "provider": "ollama",
     "model": "qwen2.5-coder:7b",
     "base_url": "http://localhost:11434",
+    "timeout_seconds": 30,
     "enabled": true,
     "fallback_to_rule_parser": true
   },
