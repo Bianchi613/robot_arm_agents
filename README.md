@@ -7,7 +7,23 @@ Simulador de um braco robotico para jogar xadrez, com uma camada de regras antes
 O fluxo atual e:
 
 ```txt
-Usuario -> ChessGame -> SupervisorAgent -> MotionCoordinator -> MockRobot
+Usuario
+  ->
+main.py
+  ->
+ChessGame
+  ->
+SupervisorAgent
+  ->
+JointAgents
+  ->
+MotionCoordinator
+  ->
+SupervisorAgent
+  ->
+MockRobot
+  ->
+Feedback
 ```
 
 ## O Que Funciona

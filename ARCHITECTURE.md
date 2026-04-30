@@ -24,6 +24,8 @@ SupervisorAgent
 MockRobot / ArduinoRobot futuro
   ->
 Feedback
+  ->
+SupervisorAgent recebe feedback
 ```
 
 ## Responsabilidades
