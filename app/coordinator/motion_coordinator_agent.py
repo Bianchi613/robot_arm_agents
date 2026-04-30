@@ -4,7 +4,7 @@ class MotionCoordinatorAgent:
         config: dict,
         board_positions: dict,
         llm=None,
-        fallback_enabled: bool = True,
+        fallback_enabled: bool = False,
     ) -> None:
         self.config = config
         self.board_positions = board_positions

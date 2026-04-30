@@ -1,5 +1,5 @@
 class BaseJointAgent:
-    def __init__(self, config: dict, llm=None, fallback_enabled: bool = True) -> None:
+    def __init__(self, config: dict, llm=None, fallback_enabled: bool = False) -> None:
         self.config = config
         self.llm = llm
         self.fallback_enabled = fallback_enabled

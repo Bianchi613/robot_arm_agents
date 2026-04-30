@@ -1,6 +1,6 @@
 # Arquitetura
 
-![Robot Arm Agents flow](docs/robot_arm_agents_flow.svg)
+![Robot Arm Agents flow](docs/robot_arm_agents.png)
 
 ## Visao Geral
 
@@ -50,6 +50,7 @@ SupervisorAgent recebe feedback
 - le o estado do robo
 - chama os agentes das articulacoes
 - recebe o plano do coordenador
+- usa Qwen para revisar o plano final quando fallback esta desligado
 - valida seguranca final
 - envia o plano ao robo
 - recebe feedback
@@ -66,9 +67,28 @@ SupervisorAgent recebe feedback
 
 - recebe propostas dos agentes
 - detecta conflitos simples
+- usa Qwen para revisar a coordenacao tecnica do plano
 - usa `board_positions.json`
 - monta plano de movimento normal
 - monta plano de captura
+
+## Modo IA Obrigatorio
+
+Por padrao, `LLM_FALLBACK_TO_RULE_PARSER=false`.
+
+Isso significa que os componentes com nome de agente precisam usar Qwen/Ollama:
+
+```txt
+BaseJointAgent
+ShoulderJointAgent
+ElbowJointAgent
+WristJointAgent
+GripperAgent
+MotionCoordinatorAgent
+SupervisorAgent
+```
+
+Se o Qwen nao estiver disponivel, o sistema deve rejeitar/falhar claramente. Regras locais continuam existindo apenas como validacao de seguranca e como modo de emergencia quando o fallback for ligado manualmente.
 
 `MockRobot`
 
@@ -127,7 +147,7 @@ go_home
 Comando:
 
 ```txt
-mover A2 A5
+mover peao branco A2 A5
 ```
 
 Resultado:
@@ -137,6 +157,8 @@ ChessGame rejeita o lance
 SupervisorAgent nao e chamado
 MockRobot nao se mexe
 ```
+
+Se o comando vier sem peca e cor, por exemplo `mover A2 A5`, o `ChessGame` rejeita antes de consultar Qwen ou mover o braco.
 
 ## Captura
 

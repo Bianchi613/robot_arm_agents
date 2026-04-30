@@ -20,7 +20,7 @@ class SupervisorAgent:
         self.llm = self._build_llm_client(config.get("llm", {}))
         self.llm_fallback_enabled = config.get("llm", {}).get(
             "fallback_to_rule_parser",
-            True,
+            False,
         )
         self.joint_agents = [
             BaseJointAgent(config["BaseJointAgent"], self.llm, self.llm_fallback_enabled),
@@ -74,7 +74,7 @@ class SupervisorAgent:
         )
         llm_config["fallback_to_rule_parser"] = env_bool(
             "LLM_FALLBACK_TO_RULE_PARSER",
-            bool(llm_config.get("fallback_to_rule_parser", True)),
+            bool(llm_config.get("fallback_to_rule_parser", False)),
         )
 
     def handle_command(self, command: str) -> dict:
@@ -137,9 +137,14 @@ class SupervisorAgent:
         }
 
     def _build_llm_client(self, llm_config: dict) -> OllamaClient | None:
+        fallback_enabled = llm_config.get("fallback_to_rule_parser", False)
         if not llm_config.get("enabled"):
+            if not fallback_enabled:
+                raise RuntimeError("Ollama/Qwen esta desativado e os agentes exigem IA.")
             return None
         if llm_config.get("provider") != "ollama":
+            if not fallback_enabled:
+                raise RuntimeError("Provider LLM invalido e os agentes exigem Ollama/Qwen.")
             return None
         client = OllamaClient(
             base_url=llm_config.get("base_url", "http://localhost:11434"),
@@ -148,7 +153,7 @@ class SupervisorAgent:
         )
         if client.is_available():
             return client
-        if llm_config.get("fallback_to_rule_parser", True):
+        if fallback_enabled:
             return None
         raise RuntimeError("Ollama/Qwen nao esta disponivel e fallback esta desativado.")
 
@@ -170,16 +175,12 @@ class SupervisorAgent:
         return None
 
     def _parse_command(self, command: str) -> dict:
-        llm_intention = self._parse_with_llm(command)
-        if llm_intention:
-            return llm_intention
-
         parts = command.strip().upper().split()
-        if len(parts) != 3 or parts[0] != "MOVER":
-            raise ValueError("Use o formato: mover A2 A4")
+        if len(parts) != 5 or parts[0] != "MOVER":
+            raise ValueError("Use o formato: mover peao branco A2 A4")
 
-        origin = parts[1]
-        destination = parts[2]
+        origin = parts[3]
+        destination = parts[4]
         self._validate_square(origin)
         self._validate_square(destination)
 

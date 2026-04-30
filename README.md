@@ -94,10 +94,34 @@ Copie `.env.example` para `.env` ou mantenha o `.env` atual:
 OLLAMA_ENABLED=true
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=qwen2.5-coder:7b
-LLM_FALLBACK_TO_RULE_PARSER=true
+LLM_FALLBACK_TO_RULE_PARSER=false
 ```
 
-O fluxo principal com `ChessGame` nao depende do Ollama. O LLM fica preparado para interpretacao de comandos em camadas futuras.
+Por padrao, os agentes exigem Qwen/Ollama. Se o Qwen nao responder, o sistema rejeita em vez de fingir que um agente decidiu por regra local.
+
+`LLM_FALLBACK_TO_RULE_PARSER=true` deve ser usado apenas como modo de emergencia/simulacao. Nesse modo, o sistema pode continuar com regras Python e marcar `llm_used: False`.
+
+## Agentes de IA
+
+Estes componentes usam Qwen quando o fallback esta desligado:
+
+- `BaseJointAgent`
+- `ShoulderJointAgent`
+- `ElbowJointAgent`
+- `WristJointAgent`
+- `GripperAgent`
+- `MotionCoordinatorAgent`
+- revisao final do `SupervisorAgent`
+- jogada de resposta do agente adversario no `ChessGame`
+
+A saida mostra a prova de uso:
+
+```txt
+agentes_qwen: 5/5
+coordenador_qwen: {... 'llm_used': True ...}
+revisao_qwen: {...}
+decisao: qwen2.5-coder:7b
+```
 
 ## Rodar
 
@@ -156,10 +180,23 @@ Status: rejected
 Mensagem: Peca declarada nao confere: voce informou knight, mas em A2 existe white_pawn.
 ```
 
-Lance ilegal:
+Comando incompleto:
 
 ```bash
 python app/main.py "mover A2 A5"
+```
+
+Esperado:
+
+```txt
+Status: rejected
+Mensagem: Use o formato: mover peao branco A2 A4
+```
+
+Lance ilegal com identidade completa:
+
+```bash
+python app/main.py "mover peao branco A2 A5"
 ```
 
 Esperado:

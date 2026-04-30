@@ -1,21 +1,19 @@
 from __future__ import annotations
 
+import unicodedata
+
 import chess
 
 
 class ChessGame:
-    def __init__(self, llm=None, fallback_enabled: bool = True) -> None:
+    def __init__(self, llm=None, fallback_enabled: bool = False) -> None:
         self.board = chess.Board()
         self.llm = llm
         self.fallback_enabled = fallback_enabled
 
     def validate_command(self, command: str) -> dict:
         try:
-            qwen_parsed = self._parse_command_with_qwen(command)
-            if qwen_parsed:
-                origin, destination, expected_piece_type, expected_piece_color = qwen_parsed
-            else:
-                origin, destination, expected_piece_type, expected_piece_color = self._parse_command(command)
+            origin, destination, expected_piece_type, expected_piece_color = self._parse_command(command)
         except ValueError as error:
             return {
                 "status": "rejected",
@@ -225,6 +223,7 @@ class ChessGame:
         return origin, destination, expected_piece_type, expected_piece_color
 
     def _normalize_piece_name(self, piece_name: str) -> str:
+        piece_key = self._strip_accents(piece_name.strip().upper())
         names = {
             "PEAO": "pawn",
             "PEÃO": "pawn",
@@ -241,9 +240,9 @@ class ChessGame:
             "REI": "king",
             "KING": "king",
         }
-        if piece_name not in names:
+        if piece_key not in names:
             raise ValueError(f"Tipo de peca desconhecido: {piece_name}")
-        return names[piece_name]
+        return names[piece_key]
 
     def _normalize_color_name(self, color_name: str) -> str:
         names = {
@@ -257,6 +256,10 @@ class ChessGame:
         if color_name not in names:
             raise ValueError(f"Cor de peca desconhecida: {color_name}")
         return names[color_name]
+
+    def _strip_accents(self, value: str) -> str:
+        normalized = unicodedata.normalize("NFKD", value)
+        return "".join(char for char in normalized if not unicodedata.combining(char))
 
     def _validate_square(self, square: str) -> None:
         if len(square) != 2:

@@ -14,7 +14,21 @@ from app.supervisor.supervisor_agent import SupervisorAgent
 
 def main() -> None:
     command = " ".join(sys.argv[1:]).strip() or "mover peao branco A2 A4"
-    supervisor = SupervisorAgent.from_default_config()
+    try:
+        supervisor = SupervisorAgent.from_default_config()
+    except RuntimeError as error:
+        _print_result(
+            command,
+            {
+                "status": "rejected",
+                "message": str(error),
+                "plan": {},
+                "feedback": None,
+                "chess": {},
+            },
+        )
+        return
+
     chess_game = ChessGame(
         llm=supervisor.llm,
         fallback_enabled=supervisor.llm_fallback_enabled,
@@ -38,7 +52,13 @@ def main() -> None:
     if chess_result.get("checkmate"):
         return
 
-    agent_chess_result = chess_game.choose_agent_move()
+    try:
+        agent_chess_result = chess_game.choose_agent_move()
+    except RuntimeError as error:
+        agent_chess_result = {
+            "status": "rejected",
+            "message": str(error),
+        }
     if agent_chess_result["status"] != "ok":
         agent_result = {
             "status": agent_chess_result["status"],
