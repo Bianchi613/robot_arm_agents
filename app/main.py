@@ -28,7 +28,32 @@ def main() -> None:
         return
 
     supervisor = SupervisorAgent.from_default_config()
-    result = supervisor.handle_intention(
+    result = _execute_chess_move(supervisor, chess_result)
+    result["chess"] = chess_result
+    _print_result(command, result)
+
+    if chess_result.get("checkmate"):
+        return
+
+    agent_chess_result = chess_game.choose_agent_move()
+    if agent_chess_result["status"] != "ok":
+        agent_result = {
+            "status": agent_chess_result["status"],
+            "message": agent_chess_result["message"],
+            "plan": {},
+            "feedback": None,
+            "chess": agent_chess_result,
+        }
+        _print_result("resposta do agente", agent_result)
+        return
+
+    agent_result = _execute_chess_move(supervisor, agent_chess_result)
+    agent_result["chess"] = agent_chess_result
+    _print_result("resposta do agente", agent_result)
+
+
+def _execute_chess_move(supervisor: SupervisorAgent, chess_result: dict) -> dict:
+    return supervisor.handle_intention(
         {
             "action": "move_piece",
             "origin": chess_result["origin"],
@@ -41,8 +66,6 @@ def main() -> None:
             "captured_piece": chess_result.get("captured_piece"),
         }
     )
-    result["chess"] = chess_result
-    _print_result(command, result)
 
 
 def _print_result(command: str, result: dict) -> None:

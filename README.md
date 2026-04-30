@@ -31,6 +31,7 @@ Feedback
 - Validacao de lances com `python-chess`.
 - Bloqueio de lances ilegais antes do braco se mexer.
 - Movimento normal de uma peca.
+- Resposta automatica do agente adversario com uma jogada legal.
 - Captura simulada com remocao da peca capturada para `CAPTURE_ZONE`.
 - Plano fisico por etapas.
 - Tabuleiro fisico simulado com casas `A1` ate `H8`.
@@ -119,6 +120,12 @@ Xadrez:
 peca_movida: True
 antes: {'A2': 'white_pawn', 'A4': None}
 depois: {'A2': None, 'A4': 'white_pawn'}
+
+Comando: resposta do agente
+peca: black_pawn
+origem: E7
+destino: E5
+depois: {'E7': None, 'E5': 'black_pawn'}
 ```
 
 Tambem pode informar a peca esperada:

@@ -36,6 +36,7 @@ SupervisorAgent recebe feedback
 - aceita peca opcional, como `mover peao A2 A4`
 - valida regras de xadrez com `python-chess`
 - confere se a peca declarada bate com a casa de origem
+- escolhe uma jogada legal de resposta para o agente adversario
 - sabe de quem e a vez
 - detecta lance ilegal
 - detecta movimento normal
@@ -101,6 +102,8 @@ Fluxo:
 6. MotionCoordinator monta o plano
 7. MockRobot executa
 8. Feedback confirma antes/depois
+9. ChessGame escolhe uma jogada legal de resposta
+10. SupervisorAgent executa a resposta do agente
 ```
 
 Plano fisico:

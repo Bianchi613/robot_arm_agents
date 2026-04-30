@@ -32,9 +32,57 @@ class ChessGame:
                 ),
             }
 
-        captured_piece = self.board.piece_at(chess.parse_square(destination.lower()))
+        return self._apply_move(
+            move=move,
+            normal_message="Lance normal validado pelo ChessGame.",
+            capture_message="Captura validada pelo ChessGame.",
+        )
+
+    def choose_agent_move(self) -> dict:
+        if self.board.is_game_over():
+            return {
+                "status": "rejected",
+                "message": "A partida ja terminou.",
+            }
+
+        move = self._select_agent_move()
+        return self._apply_move(
+            move=move,
+            normal_message="Jogada de resposta escolhida pelo ChessGame.",
+            capture_message="Captura de resposta escolhida pelo ChessGame.",
+        )
+
+    def _select_agent_move(self) -> chess.Move:
+        preferred_moves = [
+            "e7e5",
+            "d7d5",
+            "g8f6",
+            "b8c6",
+            "c7c5",
+            "e7e6",
+            "d7d6",
+            "a7a6",
+        ]
+        legal_moves = list(self.board.legal_moves)
+        legal_by_uci = {move.uci(): move for move in legal_moves}
+        for move_uci in preferred_moves:
+            if move_uci in legal_by_uci:
+                return legal_by_uci[move_uci]
+        return sorted(legal_moves, key=lambda legal_move: legal_move.uci())[0]
+
+    def _apply_move(
+        self,
+        move: chess.Move,
+        normal_message: str,
+        capture_message: str,
+    ) -> dict:
+        origin = chess.square_name(move.from_square).upper()
+        destination = chess.square_name(move.to_square).upper()
+        moving_piece = self.board.piece_at(move.from_square)
+        captured_piece = self.board.piece_at(move.to_square)
         is_capture = self.board.is_capture(move)
         self.board.push(move)
+
         result = {
             "status": "ok",
             "origin": origin,
@@ -51,7 +99,7 @@ class ChessGame:
         if is_capture:
             result.update(
                 {
-                    "message": "Captura validada pelo ChessGame.",
+                    "message": capture_message,
                     "captured_square": destination,
                     "captured_piece_color": self._piece_color(captured_piece),
                     "captured_piece_type": self._piece_type(captured_piece),
@@ -60,7 +108,7 @@ class ChessGame:
             )
             return result
 
-        result["message"] = "Lance normal validado pelo ChessGame."
+        result["message"] = normal_message
         return result
 
     def _piece_label(self, piece: chess.Piece | None) -> str | None:
